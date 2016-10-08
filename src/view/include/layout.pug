@@ -1,0 +1,96 @@
+doctype html
+
+-
+  config = {}
+  //- fully settled by (**both required**)
+  //- config = {
+  //-   // common config
+  //-   // +ConfigCommon() in layout.{zh,en}.pug
+  //-   lang, /** @type {string} zh-cmn-hans, en-us */
+  //-   langAlt, /** @type {string} en-us, zh-cmn-hans */
+  //-   siteName, /** @type {string} offical website */
+  //-
+  //-   // page config
+  //-   // +ConfigPage() in each page
+  //-   category, /** @type {string} main category of nav bar */
+  //-   title, /** @type {string} Lorem */
+  //-   shortTitle, /** @type {string} Lorem */
+  //-   description, /** @type {string} Ipsum */
+  //-   keywords, /** @type {Array<String>} ['Lorem', 'ipsum', 'dolor'] */
+  //-   URL, /** @type {string} https://html-demo.org/whatever */
+  //-   imageURL /** @type {string} Optional https://html-demo.org/whatever.png */
+  //- }
+
+block CommonConfig
+  //- **must** be like this
+  //- +ConfigCommon(args)
+  //- block PageConfig
+
+html(lang=config.lang dir='ltr' prefix='og: http://ogp.me/ns#')
+  head
+    meta(charset='UTF-8')
+    title= config.title
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+
+    // Site information
+    meta(name='keywords' content=config.keywords.join(','))
+    meta(name='description' content=config.description)
+
+    // Web Application Manifest
+    // @see https://developer.mozilla.org/en-US/docs/Web/Manifest
+    link(rel='manifest' href='manifest.json')
+
+    // Color the status bar on mobile devices
+    meta(name='theme-color' content='#664CED')
+
+    // Open Graph protocol
+    // @see http://www.ogp.me/
+    meta(property='og:title' content=config.title)
+    meta(property='og:type' content='website')
+    meta(property='og:url' content=config.URL)
+    if config.imageURL
+      meta(property='og:image' content=config.imageURL)
+    meta(property='og:description' content=config.description)
+    meta(property='og:locale' content=config.lang)
+    meta(property='og:locale:alternate' content=config.langAlt)
+    meta(property='og:site_name' content=config.siteName)
+
+    // Twitter Summary Card
+    // @see https://dev.twitter.com/cards/types/summary
+    meta(name='twitter:card' content='summary')
+    meta(name='twitter:site' content='@linux_html-demo')
+    meta(name='twitter:title' content=config.title)
+    meta(name='twitter:description' content=config.description)
+
+    // Add to homescreen for Chrome on Android
+    // @see https://developer.chrome.com/multidevice/android/installtohomescreen#fallback
+    meta(name='mobile-web-app-capable' content='yes')
+    meta(name='application-name' content=config.siteName)
+    link(rel='icon' sizes='192x192' href='/asset/image/touch/chrome-touch-icon-192x192.png')
+
+    // Add to homescreen for Safari on iOS
+    // @see https://developer.apple.com/library/iad/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html
+    meta(name='apple-mobile-web-app-capable' content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style' content='black')
+    meta(name='apple-mobile-web-app-title' content=config.siteName)
+    link(rel='apple-touch-icon' href='/asset/image/touch/apple-touch-icon-152x152.png')
+
+    // Disable tap highlight on IE
+    // @see https://msdn.microsoft.com/en-us/library/bg182645(v=vs.85).aspx#tapHighlight
+    meta(name='msapplication-tap-highlight' content='no')
+
+    // Tile icon for Win8 (144x144 + tile color)
+    // @see https://msdn.microsoft.com/en-us/library/dn255024(v=vs.85).aspx
+    meta(name='msapplication-TileImage' content='/asset/image/touch/ms-touch-icon-144x144-precomposed.png')
+    meta(name='msapplication-TileColor' content='#664CED')
+
+    block CommonHead
+    link(href='/asset/style/style.css' rel='stylesheet')
+  body
+    //- filled in layout.{zh,en}.pug
+    block CommonBody
+    //- // nav#navigation
+    //- block Nav
+    //- #main
+    //-   block Main

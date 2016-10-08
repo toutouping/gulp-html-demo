@@ -1,0 +1,418 @@
+/**
+ * Page Header
+ */
+
+.header {
+  // colors
+  $background: $mosaic;
+  $navlink--color: $athens-grey;
+  $navlink--hover--color: $deep-sky-blue;
+  $navlink--hover--background: $cinder;
+  $navlink-sm--hover-background: $blue-bark;
+  $search-color: $nero;
+  $search-background: $athens-grey;
+  $search-border-color: $havelock-blue;
+  $navlink-border---color: $mosaic--lighter;
+  $icon--color: $athens-grey;
+  $title-color: $athens-grey;
+  $submenu-sm--background: rgba($blue-bark, 0.9);
+  $submenu-sm--color: $white;
+
+  z-index: 1;
+
+  // make header closes to page top edge
+  justify-self: flex-start;
+  height: 3.6875rem;
+  background: $background;
+  width: 100%;
+  position: fixed;
+  margin-bottom: 3.6875rem;
+  @include media-sm {
+    position: static;
+    margin-bottom: 0;
+  }
+  @at-root #{&}__content {
+    max-width: $content--max-width;
+    margin: auto;
+    padding: 0 0.9375rem;
+  }
+  @at-root #{&}__logo {
+    line-height: 3.6875em;
+    margin-right: 1.125rem;
+
+    // hide logo on small screen
+    display: none;
+    @include media-sm { display: block; }
+
+    img {
+      @include ui-label;
+      width: 94px;
+      height: 25px;
+      vertical-align: middle;
+    }
+  }
+
+  @at-root #{&}__navlist {
+    display: block;
+    position: fixed;
+    height: 100vh;
+    overflow: auto;
+    background: $background;
+    padding-top: 3.6875rem; // header height
+    top: 0;
+    left: -14rem;
+    width: 14rem;
+    box-shadow: 0 0 0px darken($background, 30%);
+    transition: all 0.3s ease;
+    z-index: 2; // bigger than __menu-button
+    &.active {
+      left: 0rem;
+      box-shadow: 0 0 5px darken($background, 30%);
+    }
+    &.active + .header__navlist-overlay {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1; // smaller than __navlist
+      background: rgba(darken($background, 30%), 0.3);
+    }
+    @include media-sm {
+      display: block;
+      position: static;
+      height:inherit;
+      width: inherit;
+      padding-top: 0;
+      box-shadow: none !important;
+      overflow: visible;
+    }
+    &>ul {
+      @include ui-clickable;
+      list-style: none;
+      margin: 0;
+      padding-inline-start: 0;
+      font-size: 0;
+    }
+  }
+
+  @at-root #{&}__navlink {
+    display: inline-block;
+    position: relative;
+
+    // because `.header__navlist > ul` uses font-size: 0
+    // we use rem to recover the size
+    font-size: 1rem;
+
+    width: 100%;
+    @include media-sm {
+      width: inherit;
+    }
+
+    // hide language section in large screen
+    @at-root #{&}--language {
+      @include media-sm {
+        display: none;
+      }
+    }
+
+    &>a {
+      position: relative;
+      border-bottom: 1px solid $navlink-border---color;
+      @include media-sm {
+        border: 0;
+      }
+    }
+    &.header__navlink--has-submenu>a::after {
+      @include icon;
+      content: $icon-arrow-down;
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      margin-top: -0.5em;
+
+      // hide this arrow in large screen
+      @include media-sm {
+        display: none;
+      }
+    }
+    &.header__navlink--has-submenu.active>a::after {
+      content: $icon-arrow-up;
+    }
+    a {
+      &:link {
+        display: block;
+        padding: 0 1.75rem;
+        line-height: 3.6875em;
+        height: 3.6875rem;
+        color: $navlink--color;
+        text-decoration: none;
+      }
+      &:visited {
+        color: $navlink--color;
+      }
+      &:hover {
+        color : $navlink--hover--color;
+        background: $navlink-sm--hover-background;
+        @include media-sm {
+          background: $navlink--hover--background;
+        }
+      }
+    }
+    ul a {
+      &::before {
+        color: $navlink--color;
+        content: '‧';
+        position: absolute;
+        left: 0.5rem;
+        @include media-sm { display:  none; }
+      }
+    }
+    &.active>a {
+      color : $navlink--hover--color;
+      background: $navlink-sm--hover-background;
+    }
+    &.active ul>a {
+      color : $navlink--hover--color;
+      background: $navlink-sm--hover-background;
+      @include media-sm {
+        background: $navlink--hover--background;
+      }
+    }
+  }
+
+  @at-root #{&}__submenu {
+    position: static;
+    padding: 0;
+    background: $background;
+    @include media-sm {
+      position: absolute;
+      background: $submenu-sm--background;
+    }
+    display: block;
+    top: 3.6875rem;
+    overflow: hidden;
+    max-height: 0;
+    transition:
+      max-height 0.25s ease,
+      padding 0.25s ease;
+    white-space: nowrap;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    padding-inline-start: 0;
+    li,
+    li a {
+      display: block;
+      opacity: 0;
+      transition:
+        opacity 0.3s ease;
+    }
+    li a:link {
+      font-size: 1em;
+      padding: 0 1.75rem;
+      line-height: 3.6875em;
+      height: 3.6875rem;
+      @include media-sm {
+        font-size: 0.875em;
+        padding-left: 1.6875rem;
+        padding-right: 1.5625rem;
+        line-height: 2.571428571428571em;
+        height: 2.571428571428571em;
+        color: $submenu-sm--color;
+      }
+    }
+    li a:hover,
+    li a:active {
+      color: $navlink--hover--color;
+    }
+    .header__navlink.active & {
+      max-height: 50em;
+      @include media-sm {
+        max-height: 0;
+      }
+      li,
+      li a {
+        opacity: 1;
+        text-indent: 1.5em;
+        @include media-sm {
+          text-indent: 0;
+        }
+      }
+    }
+    .header__navlink:hover & {
+      max-height: 50em;
+      @include media-sm {
+        padding-top: 0.625rem;
+        padding-bottom: 1.4375rem;
+      }
+      li,
+      li a {
+        opacity: 1;
+        text-indent: 1.5em;
+        @include media-sm {
+          text-indent: 0;
+        }
+      }
+    }
+  }
+
+  @at-root #{&}__switch-language {
+    @include ui-clickable;
+    display: none;
+    position: relative;
+    @include media-sm {
+      display: flex;
+      align-items: center;
+    }
+    margin-left: auto 1.25rem;
+    width: 2rem;
+    height: 100%;
+    color: $icon--color;
+    &::after {
+      @include icon;
+      content: $icon-language;
+    }
+    ul {
+      right: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      li {
+        display: block;
+      }
+    }
+    &:hover ul {
+      max-height: 50em;
+      @include media-sm {
+        padding-top: 0.625rem;
+        padding-bottom: 1.4375rem;
+      }
+      li,
+      li a {
+        opacity: 1;
+        text-indent: 0em;
+      }
+    }
+  }
+
+  @at-root #{&}__search {
+    display: none;
+    @include media-sm {
+      display: flex;
+      align-items: center;
+    }
+    height: 100%;
+    margin: auto 0.725rem;
+    color: $icon--color;
+    &::after {
+      @include icon;
+      content: $icon-search;
+      position: relative;
+      right: 1.25rem;
+      pointer-events: none;
+    }
+    input[type='search'] {
+      cursor: pointer;
+      height: 1.6875rem;
+      max-width: 0rem;
+      opacity: 0;
+      padding-right: 1.5em;
+      padding-left: 0.5em;
+      text-align-last: auto;
+      color: $search-color;
+      background: $search-background;
+      border: 0;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      border-right: 0 solid transparent;
+      &:active,
+      &:focus {
+        max-width: 14rem;
+        opacity: 1;
+        cursor: text;
+        padding-right: 0.5em;
+        border-right: 1.5rem solid $search-border-color;
+      }
+
+      /**
+       * remove the 'x' button on search input
+       * on webkit browsers.
+       * @see http://stackoverflow.com/questions/20804016/html-how-to-edit-the-x-button-that-apear-on-input-type-search
+       */
+      &::-webkit-search-cancel-button {
+        display: none;
+      }
+    }
+  }
+
+  @at-root #{&}__pc-buttons {
+    display: none;
+    @include media-sm { display: flex; }
+  }
+
+  @at-root #{&}__close-button {
+    position: fixed;
+    height: 3.6875rem; // header height
+    left: -4rem; // hide on left side
+    opacity: 0;
+    color: $icon--color;
+    font-size: 2em;
+    transform: scale(0);
+    z-index: 2; // bigger than __navlist-overlay
+    transition:
+      left 0.3s ease,
+      transform 0.3s ease,
+      opacity 0.3s ease 0.2s;
+    &.active {
+      left: 12rem; // header__navlist width
+      opacity: 1;
+      transform: scale(1);
+    }
+    .icon {
+      @include ui-clickable;
+      margin: auto;
+    }
+    @include media-sm {
+      display: none;
+    }
+  }
+
+  @at-root #{&}__menu-button {
+    position: fixed;
+    left: -2rem;
+    height: 3.6875rem; // header height
+    font-size: 2em;
+    color: $icon--color;
+    z-index: 1;
+    @include media-sm {
+      display: none;
+    }
+    .icon {
+      @include ui-clickable;
+      margin: auto;
+    }
+  }
+
+  @at-root #{&}__title {
+    position: fixed;
+    font-size: 0.8em;
+    width: 15em;
+    height: 3.6875rem; // header height
+    line-height: 3.6875rem; // header height
+    top: 0;
+    left: 50%;
+    margin-left: - (15em/2); // -1/2 width
+    text-align: center;
+    white-space: nowrap;
+    color: $title-color;
+    .header__close-button.active+& {
+      display: none;
+    }
+    @include media-sm {
+      display: none;
+    }
+    h1 {
+      margin: 0;
+      font-weight: normal;
+    }
+  }
+}

@@ -1,0 +1,54 @@
+mixin Header(current)
+  -
+    categories = [
+      {title: "l1", href: "/"},
+      {title: "l2", href: "/l2.1.html", children: [
+        {title: "l2.1", href: "/l2.1.html"},
+        {title: "l2.2", href: "/l2.2.html"},
+        {title: "l2.3", href: "/l2.3.html"}
+      ]},
+      {title: "l3", href: "/l3.html"},
+      {title: "l4", href: "/l4.html"},
+      {title: "l5", href: "l5.1.html", children: [
+        {title: "l5.1", href: "l5.1.html"},
+        {title: "l5.2", href: "l5.2.html"},
+        {title: "l5.3", href: "l5.3.html"},
+        {title: "l5.4", href: "l5.4.html"},
+        {title: "l5.5", href: "l5.5.html"},
+        {title: "l5.6", href: "l5.6.html"},
+      ]}
+    ]
+  header.header
+    .header__content.grid.grid--justify-space-between.grid--bleed
+      .grid__col-auto.grid--direction-row
+        a.header__logo(href='/' alt='[logo]')
+          img(alt='logo' src='/assets/image/logo.png')
+        nav.header__navlist: ul
+          each c in categories
+            li.header__navlink(
+              class={active: c.title === current}
+              class={"header__navlink--has-submenu" : !!c.children})
+              a(href=c.href)= c.title
+              if c.children
+                ul.header__submenu
+                  each cc in c.children
+                    li: a(href=cc.href)= cc.title
+          li.header__navlink--has-submenu.header__navlink.header__navlink--language
+            a(href='#') 中文
+            ul.header__submenu
+              li: a(href='#') 英文
+              li: a(href='#') English
+        .header__navlist-overlay
+      .header__pc-buttons.grid__col-3.grid--direction-row.grid--justify-end.grid--align-center
+        .header__switch-language
+          ul.header__submenu
+            li.header__navlink: a(href='#') English
+            li.header__navlink: a(href='#') 简体中文
+        .header__search
+          input(type='search' placeholder='请输入搜索内容')
+      .grid__col-4.header__menu-button
+        span.icon menu-button
+      .grid__col-4.header__close-button
+        span.icon delete
+      .grid__col-4.header__title
+        h1= config.shortTitle

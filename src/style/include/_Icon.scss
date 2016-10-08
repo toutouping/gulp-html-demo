@@ -1,0 +1,151 @@
+/**
+ * icon font definitions
+ *
+ * to preview all the icons
+ * @see https://tower.im/projects/ac11a144ee0344d8a995f5434f6ceb09/todos/06fd3604f41945369d6f5497b76eee99/#045272fe81d94ad7a0080a9247207b13
+ */
+@font-face {
+  font-family: 'icomoon';
+  src:  url('#{$icomoon-font-path}/icomoon.eot?6xqt33');
+  src:  url('#{$icomoon-font-path}/icomoon.eot?6xqt33#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/icomoon.ttf?6xqt33') format('truetype'),
+    url('#{$icomoon-font-path}/icomoon.woff?6xqt33') format('woff'),
+    url('#{$icomoon-font-path}/icomoon.svg?6xqt33#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin icon() {
+  /* make icon unselectable */
+  @include ui-label;
+
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Enable Ligatures ================ */
+  letter-spacing: 0;
+  -webkit-font-feature-settings: 'liga';
+  -moz-font-feature-settings: 'liga=1';
+  -moz-font-feature-settings: 'liga';
+  -ms-font-feature-settings: 'liga' 1;
+  font-feature-settings: 'liga';
+  -webkit-font-variant-ligatures: discretionary-ligatures;
+  font-variant-ligatures: discretionary-ligatures;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon,
+[class^='icon-'],
+[class*=' icon-'] {
+  @include icon;
+}
+
+.icon-facebook {
+  &:before {
+    content: $icon-facebook;
+  }
+}
+.icon-twitter {
+  &:before {
+    content: $icon-twitter;
+  }
+}
+.icon-language {
+  &:before {
+    content: $icon-language;
+  }
+}
+.icon-search {
+  &:before {
+    content: $icon-search;
+  }
+}
+.icon-share {
+  &:before {
+    content: $icon-share;
+  }
+}
+.icon-download {
+  &:before {
+    content: $icon-download;
+  }
+}
+.icon-sourceforge {
+  &:before {
+    content: $icon-sourceforge;
+  }
+}
+.icon-iso-repository {
+  &:before {
+    content: $icon-iso-repository;
+  }
+}
+.icon-mega {
+  &:before {
+    content: $icon-mega;
+  }
+}
+.icon-baidu-cloud {
+  &:before {
+    content: $icon-baidu-cloud;
+  }
+}
+.icon-arrow-left {
+  &:before {
+    content: $icon-arrow-left;
+  }
+}
+.icon-arrow-right {
+  &:before {
+    content: $icon-arrow-right;
+  }
+}
+.icon-arrow-up {
+  &:before {
+    content: $icon-arrow-up;
+  }
+}
+.icon-arrow-down {
+  &:before {
+    content: $icon-arrow-down;
+  }
+}
+.icon-wechat {
+  &:before {
+    content: $icon-wechat;
+  }
+}
+.icon-sina-weibo {
+  &:before {
+    content: $icon-sina-weibo;
+  }
+}
+.icon-mailing-list {
+  &:before {
+    content: $icon-mailing-list;
+  }
+}
+.icon-irc {
+  &:before {
+    content: $icon-irc;
+  }
+}
+.icon-menu-button {
+  &:before {
+    content: $icon-menu-button;
+  }
+}
+.icon-delete {
+  &:before {
+    content: $icon-delete;
+  }
+}

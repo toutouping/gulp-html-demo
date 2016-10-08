@@ -1,0 +1,81 @@
+/** utility functions */
+
+/**
+ * return a unitless number of input number
+ * @param  {number} $number number with or with unit
+ * @return {number}         number without unit
+ * @see http://stackoverflow.com/a/12335841/2488867
+ */
+@function strip-unit($number) {
+  @return $number / ($number * 0 + 1);
+}
+
+/**
+ * return a length which transition from $from-size
+ * to $to-size seamlessly between two media size.
+ *
+ * *Size should be **same** unit, px/em
+ * *MediaSize should be **same** unit, px/em
+ * *Size *MediaSize could be different unit
+ *
+ * @param  {string} $from-size  start size
+ * @param  {string} $to-size    end size
+ * @param  {string} $from-media-size start media size
+ * @param  {string} $to-media-size   end media size
+ * @return {string}
+ */
+@function calculate-fluid-size(
+  $from-size,
+  $to-size,
+  $from-media-size,
+  $to-media-size
+  ) {
+/**
+ * returned size will be related to viewport size
+ *
+ * when viewport size is at exactly $from-media-size
+ * returned size is exactly $from-size
+ *
+ * when viewport size is between ($from-media-size, $to-media-size)
+ * returned size is between ($from-size, $to-size)
+ * the size increases slightly as viewport size increasing
+ *
+ * when viewport size is at exactly $to-media-size
+ * returned size is exactly $to-size
+ *
+ * so that we get a seamlessly transition
+ * between two specified size.
+ *
+ * from size                  to media size
+ *    +                                +
+ *    |                 viewport size  |
+ *    +--------------+        +        |
+ *    |              |        |        |
+ *    |              |        v        v
+ *    v              v       (vsize - fmedia)
+ * fsize + (tsize - fsize) * -----------------
+ *          ^                (tmedia - fmedia)
+ *          |                  ^        ^
+ *          +                  |        |
+ *         to size             |        |
+ *                             +        |
+ *                      to media size   |
+ *                                      +
+ *                            from media size
+ *
+ * for detail explaination, see:
+ *   Truly Fluid Typography With vh And vw Units
+ *   By Michael Riethmuller
+ *   https://www.smashingmagazine.com/2016/05/fluid-typography/#controlling-the-rate-of-scale
+ */
+
+ /**
+  * use a factor to store constant values
+  * so they can be evaluate during compilation
+  */
+ $factor: (strip-unit($to-size) - strip-unit($from-size))
+          / (strip-unit($to-media-size) - strip-unit($from-media-size));
+
+ $result: calc(#{$from-size} + #{$factor} * (100vw - #{$from-media-size}));
+ @return $result;
+}

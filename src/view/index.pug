@@ -1,0 +1,25 @@
+extends ./include/layout.zh.pug
+
+block PageConfig
+  include ./include/ConfigPage
+  -
+    iConfigPage = {
+      category: '首页',
+      title: '官方网站 | 首页',
+      shortTitle: '首页',
+      description: '官方网站首页',
+      keywords: ['官方网站','官方网站'],
+      URL: '/index.html',
+      imageURL: 'asset/image/touch/chrome-touch-icon-192x192.png'
+    }
+  +ConfigPage(iConfigPage)
+
+block PageHead
+  link(rel='stylesheet' href='/asset/style/bundle.css')
+
+
+block PageBody
+  main
+      ul
+        li
+            img

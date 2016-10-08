@@ -1,0 +1,81 @@
+/**
+ * Page Footer
+ */
+
+.footer {
+  $color: $gray;
+  $background: $bleached-cedar--darker;
+
+  font-size: 0.75em;
+
+  // hide footer on small screen
+  display: none;
+  @include media-sm { display: block; }
+
+  // make footer closes to page bottom edge
+  justify-self: flex-end;
+  padding: 0 1em;
+  background-color: $background;
+  color: $color;
+  @at-root #{&}__content {
+    margin: auto;
+    padding: {
+      top: 2.1875rem;
+      bottom: 0.875rem;
+    }
+    max-width: $content--max-width;
+    list-style: none;
+    ul, p {
+      padding-inline-start: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      text-align: left;
+    }
+  }
+
+  @at-root #{&}__links {
+    margin-bottom: 1em;
+  }
+
+  @at-root #{&}__link {
+    display: inline-block;
+    word-break: keep-all;
+    // put delimeter before links
+    // except first child
+    &:nth-child(n+2)::before {
+      margin-inline-start: 0.4em;
+      margin-inline-end: 0.4em;
+      content: '|';
+    }
+    a {
+      &:link,
+      &:visited {
+        text-decoration: none;
+        color: $color;
+      }
+      &:hover {
+        color: lighten($color, 30%);
+      }
+    }
+  }
+
+  /** Social badges in footer */
+  @at-root #{&}__social {
+  }
+  @at-root #{&}__sociallink {
+    color: $color;
+    text-decoration: none;
+    color: inherit;
+    font-size: 2.5em;
+    margin: 0.4em;
+    height: 1em;
+    width: 1em;
+    opacity: 0.5;
+    &:hover {
+        opacity: 1;
+    }
+    .icon {
+      cursor: pointer;
+    }
+  }
+}

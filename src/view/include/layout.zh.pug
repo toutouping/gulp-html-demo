@@ -1,0 +1,37 @@
+extends ./layout
+
+block CommonConfig
+  //- language specific config
+  include ./ConfigCommon
+  -
+    iConfigCommon = {
+      lang: 'zh-cmn-hans',
+      langAlt: 'en-us',
+      siteName: '官方网站'
+    }
+  +ConfigCommon(iConfigCommon)
+
+  //- page specific config
+  block PageConfig
+
+block CommonHead
+  //- language specific public head tags goes here
+  //- ...
+
+  //- page specific head tags
+  block PageHead
+
+block CommonBody
+  //- language specific public body tags goes here
+  //- ...
+  include ./Header.zh.pug
+  +Header(config.category)
+
+  //- page specific body tags
+  block PageBody
+
+  include ./Footer.zh.pug
+  +Footer()
+
+  block PageBodyScript
+    script(src='/assets/front/script/main.js')

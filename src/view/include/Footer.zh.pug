@@ -1,0 +1,18 @@
+mixin Footer()
+  footer.footer
+    .footer__content.grid.grid--bleed
+      section.grid__col-sm-6
+        nav.footer__links: ul
+          li.footer__link: a(href='＃') 关于我们
+          li.footer__link: a(href='＃') 联系我们
+          li.footer__link: a(href='＃') 友情链接
+        p.grid__col-auto ©鄂ICP备
+      section.footer__social.grid__col-sm-6.grid--direction-row.grid--justify-end.grid--align-center
+        a.footer__sociallink.grid__col-3(href='＃' target='blank')
+          span.icon Sina-weibo
+        a.footer__sociallink.grid__col-3(href='')
+          span.icon wechat
+        a.footer__sociallink.grid__col-3(href='')
+          span.icon irc
+        a.footer__sociallink.grid__col-3(href='')
+          span.icon mailing-list

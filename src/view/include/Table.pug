@@ -1,0 +1,11 @@
+mixin Table(head, body)
+  table
+    thead
+      tr
+        each h in head
+          th= h
+    tbody
+      each row in body
+        tr
+          each d in row
+            td= d

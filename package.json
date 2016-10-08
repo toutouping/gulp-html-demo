@@ -1,0 +1,47 @@
+{
+  "name": "html-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make build",
+    "develop": "make develop",
+    "clean": "rm -rf ./dist",
+    "pack": "rm -rf ./dist && make build && 7z a package/html-demo.org$(date +%s).7z dist/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "exorcist": "^0.4.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^5.0.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-help": "^1.6.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-pug": "^3.0.4",
+    "gulp-pug-lint": "^0.1.6",
+    "gulp-sass": "^2.3.2",
+    "gulp-scss-lint": "^0.4.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.9",
+    "jquery": "^3.1.1",
+    "lodash.assign": "^4.2.0",
+    "moment": "^2.15.1",
+    "pug-lint-config-clock": "^2.0.0",
+    "uglifyify": "^3.0.3",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "gulp-eslint": "^3.0.1",
+    "gulp-scsslint": "^0.0.5",
+    "scss-lint": "^0.0.0"
+  },
+  "description": ""
+}

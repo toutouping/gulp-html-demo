@@ -1,0 +1,105 @@
+/**
+ * Global Variables
+ */
+
+$font-stack:
+  // Western
+  Helvetica,
+  Arial,
+  'Noto Sans',
+  // Chinese
+  'Microsoft YaHei', // Windows
+  SimHei, // Windows XP
+  'PingFang SC', // OS X El Capitan
+  'Heiti SC', // OS X Snow Leopard
+  'Hiragino Sans GB', // OS X Jaguar
+  'Noto Sans CJK SC',  // Android
+  'Source Han Sans SC', // Universal
+  'WenQuanYi Zen Hei', // Linux
+  sans-serif;
+
+/**
+ *  responsive font-sizes
+ *  used on body element's fluid font-size calculation
+ *  prefix `~` means approximately equal
+ *  use `em` on font related sizes(font-size, line-height..)
+ *  use `rem` on other sizes
+ *  **avoid** using `px` as possible
+ *
+ * if you want to make some sizing responsive and seamlessly transition
+ * use like this
+ * @media ($media-sm) {
+ *   font-size: calculateFluidFontSize(
+ *     // ensure you have already defined font-size-sm/md
+ *     // or just use plain value
+ *     $font-size-sm, // start from sm(small size)
+ *     $font-size-md, // to md(middle size)
+ *     $media-sm-size,
+ *     $media-md-size
+ *   );
+ * }
+ * @media ($media-md) {
+ *   font-size: calculateFluidFontSize(
+ *     $font-size-md, // start from md(middle size)
+ *     $font-size-lg, // to lg(large size)
+ *     $media-sm-size,
+ *     $media-lg-size
+ *   );
+ * }
+ * @media ($media-lg) {
+ *   font-size: $font-size-lg;
+ * }
+ */
+$font-size-base: 1em;   // ~16px
+
+/**
+ *  max width of centent
+ *  assuming 16px of defaul font-size
+ *  prefix `~` means approximately equal
+ */
+$content--max-width: 73.125rem; // ~1170px
+
+/** responsive breakpoints
+ *  prefix `~` means approximately equal
+ */
+$media-xs-size: 30em;   // ~480px
+$media-sm-size: 48em;   // ~768px
+$media-md-size: 62em;   // ~992px
+$media-lg-size: 75em;   // ~1200px
+$media-xlg-size: 100em; // ~1600px
+
+/**
+ * Reflex variables
+ * keep them same as media-*-size
+ * to make sure media queries in our scss
+ * apply same breakpoints as Reflex
+ */
+$reflex-xs: $media-xs-size;
+$reflex-sm: $media-sm-size;
+$reflex-md: $media-md-size;
+$reflex-lg: $media-lg-size;
+$reflex-xlg: $media-xlg-size;
+
+/** icomoon variables */
+$icomoon-font-path: '../font' !default;
+
+$icon-facebook: '\e900';
+$icon-twitter: '\e901';
+$icon-language: '\e902';
+$icon-search: '\e903';
+$icon-share: '\e904';
+$icon-download: '\e905';
+$icon-sourceforge: '\e906';
+$icon-iso-repository: '\e907';
+$icon-mega: '\e908';
+$icon-baidu-cloud: '\e909';
+$icon-arrow-left: '\e90a';
+$icon-arrow-right: '\e90b';
+$icon-arrow-up: '\e90c';
+$icon-arrow-down: '\e90d';
+$icon-wechat: '\e90e';
+$icon-sina-weibo: '\e90f';
+$icon-mailing-list: '\e910';
+$icon-irc: '\e911';
+$icon-menu-button: '\e912';
+$icon-delete: '\e913';

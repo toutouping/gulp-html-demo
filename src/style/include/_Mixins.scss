@@ -1,0 +1,107 @@
+/** Generic Mixins */
+
+@mixin ui-label() {
+  user-select: none;
+  cursor: default;
+}
+
+@mixin ui-clickable() {
+  user-select: none;
+  cursor: pointer;
+}
+
+/**
+ * generate seamelessy transition rules
+ * across $breakpoints
+ * for $attribute
+ *
+ * @param  {[type]} $attribute   [description]
+ * @param  {[type]} $breakpoints [description]
+ * @return {[type]}              [description]
+ *
+ * @example
+ *   body {
+ *     @include fluid-sizes(font-size,
+ *       (1em, 48em),
+ *       (1.5em, 75em)
+ *     );
+ *   }
+ *
+ * generates:
+ *
+ *   body {
+ *     font-size: 1em;
+ *   }
+ *   @media (min-width: 48em) {
+ *     body {
+ *       font-size: calc(1em + (100vw - 48em) / (75em - 48em) * (0.5));
+ *     }
+ *   }
+ *   @media (min-width: 75em) {
+ *     body {
+ *       font-size: 1.5em;
+ *     }
+ *   }
+ */
+@mixin fluid-sizes($attribute, $breakpoints...) {
+  $len: length($breakpoints);
+  @for $i from 1 through $len {
+    @if $i==1 {
+      $transition-size: nth(nth($breakpoints, $i), 1);
+      #{$attribute}: $transition-size;
+    }
+    @if $i==$len {
+      $transition-size: nth(nth($breakpoints, $i), 1);
+      $media-size: nth(nth($breakpoints, $i), 2);
+      @media (min-width: $media-size) {
+        #{$attribute}: $transition-size;
+      }
+    } @else {
+      $transition-size: nth(nth($breakpoints, $i), 1);
+      $media-size: nth(nth($breakpoints, $i), 2);
+      $ntransition-size: nth(nth($breakpoints, $i + 1), 1);
+      $nmedia-size: nth(nth($breakpoints, $i + 1), 2);
+      @media (min-width: $media-size) {
+        #{$attribute}: calculate-fluid-size(
+          $transition-size,
+          $ntransition-size,
+          $media-size,
+          $nmedia-size);
+      }
+    }
+  }
+}
+
+
+/**
+ * media query shorthands
+ *
+ * @example
+ *   @include media-sm {
+ *     // styles apply on device larger than -sm
+ *     // goes here
+ *   }
+ */
+@mixin media-xs {
+  @media (min-width: $media-xs-size) { @content; }
+}
+
+@mixin media-sm {
+  @media (min-width: $media-sm-size) { @content; }
+}
+
+@mixin media-md {
+  @media (min-width: $media-md-size) { @content; }
+}
+
+@mixin media-md {
+  @media (min-width: $media-md-size) { @content; }
+}
+
+@mixin media-lg {
+  @media (min-width: $media-lg-size) { @content; }
+}
+
+@mixin media-xlg {
+  @media (min-width: $media-xlg-size) { @content; }
+}
