@@ -1,5 +1,5 @@
 {
-  "name": "html-demo",
+  "name": "gulp-demo",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "make build",
     "develop": "make develop",
     "clean": "rm -rf ./dist",
-    "pack": "rm -rf ./dist && make build && 7z a package/html-demo.org$(date +%s).7z dist/"
+    "pack": "rm -rf ./dist && make build && 7z a package/gulp-demo.org$(date +%s).7z dist/"
   },
   "keywords": [],
   "author": "",

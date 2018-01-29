@@ -1,10 +1,4 @@
-# 总览
-
-前端页面。
-
-## 策略
-
-应用的开发策略。
+# gulp 使用案例
 
 - 文本格式：utf-8， unix 换行
 - CSS 预/自动hack/压缩：scss, autoprefixer, cssnano
