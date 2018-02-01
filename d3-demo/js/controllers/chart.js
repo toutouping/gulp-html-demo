@@ -38,8 +38,10 @@ angular.module('ChartsApp').controller('chartCtrl', function ($scope, bus) {
             type: attr.type
         };
 
-        for (var i = 0; i < attr.children.length; i ++) {
-            var tempObj = attr.children[i];
+        var children = attr.children || attr._children;
+
+        for (var i = 0; i < children.length; i ++) {
+            var tempObj = children[i];
             switch (tempObj.type) {
                 case "product":
                     returnObj.product = tempObj.name;
