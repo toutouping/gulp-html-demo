@@ -1,0 +1,56 @@
+<!-- edit -->
+<div name="editForm">
+    <div class="details panel panel-info">
+        <div class="content">
+            <div class="panel-heading">
+                <input ng-show="node.treeId" type="text" ng-model="node.name" class="form-control">
+                <div ng-show="!node.treeId" class="panel panel-info" style="margin-bottom: 0px">
+                     <div class="panel-heading ng-binding">新增服务节点</div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="parentId" ng-show="!node.treeId">
+                    <h5>集群</h5>
+                    <div class="input-group">
+                            <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                            </div><!-- /btn-group -->
+                            <input type="text" class="form-control" aria-label="...">
+                        </div>
+                </div>
+
+                <div class="product">
+                    <h5>产品</h5>
+                    <input type="text" ng-model="node.product" class="form-control" init-focus="">
+                </div>
+
+                <div class="url">
+                    <h5>CPU</h5>
+                    <input type="text" ng-model="node.cpu" class="form-control" init-focus="">
+                </div>
+    
+                <div class="main-board">
+                    <h5>主板</h5>
+                    <input type="text" ng-model="node.mainBoard" class="form-control" init-focus="">
+                </div>
+    
+                <div class="memory">
+                    <h5>内存</h5>
+                    <input type="text" ng-model="node.memory" class="form-control" init-focus="">
+                </div>
+            </div>
+            <div class="panel-action">
+                <button type="button" ng-show="!node.treeId" ng-click="addNode(node.treeId)" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                <button type="button" ng-show="node.treeId" ng-click="deleteServer(node.treeId)" class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                <button type="button" ng-show="node.treeId" ng-click="editNode(node.treeId)" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Save</button>
+            </div>
+        </div>
+    </div>
+</div>

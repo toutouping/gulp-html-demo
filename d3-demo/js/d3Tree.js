@@ -1,8 +1,21 @@
-// 获取JSON数据
-treeJSON = d3.json("data.json", function(error, treeData) {
+'use strict';
+
+d3.chart = d3.chart || {};
+
+d3.chart.d3Tree = function() {
+    var treeData = null;  // JSOn数据
+    var tree; // 存放D3树
+    var svg = null;
+    var node = null;
+    var scale = [];
+    var zoomListener = null;
+    var svgGroup = null;
+    var dragListener = null;
 
     var totalNodes = 0; //总节点数
     var maxLabelLength = 0; // 记录名称的最大长度
+    
+    var linePx = 38; //  每一行像素高度
 
     // 拖拽时保存节点信息
     var selectedNode = null;
@@ -20,9 +33,16 @@ treeJSON = d3.json("data.json", function(error, treeData) {
     var viewerWidth = $(document).width();  // 窗口宽度
     var viewerHeight = $(document).height(); // 窗口高度
 
-    // 定义一个集群图布局
-    var tree = d3.layout.tree()
-        .size([viewerHeight, viewerWidth]); // 设定尺寸，即转换后的各节点的坐标在哪一个范围内。
+    var dragStarted = false;
+    var domNode = null;
+    var nodes = [];
+    var panTimer = null;
+    var editServerTreeId = '';
+    
+    //这是编辑按钮
+    var editTools = d3.select("#tree-container").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
     // 一个对角线生成器，只需要输入两个顶点坐标，即可生成一条贝塞尔曲线。
     var diagonal = d3.svg.diagonal()
@@ -30,6 +50,52 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             return [d.y, d.x];
         });
 
+    /**
+     * Build the chart
+     */
+    function chart(){
+        if (typeof(tree) === 'undefined') {
+            // 定义一个集群图布局
+            tree = d3.layout.tree()
+                    .size([viewerHeight, viewerWidth]); // 设定尺寸，即转换后的各节点的坐标在哪一个范围内。
+
+            visit(treeData, function(d) {
+                totalNodes++;
+                maxLabelLength = Math.max(d.name.length, maxLabelLength);
+
+            }, function(d) {
+                return d.children && d.children.length > 0 ? d.children : null;
+            });
+
+            sortTree();
+
+            zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]) // 设置最大和最小缩放比例
+                                                .on("zoom", zoom);
+
+            // 定义容器的样式和事件
+            var baseSvg = d3.select("#tree-container").append("svg")
+                .attr("width", viewerWidth)
+                .attr("height", viewerHeight)
+                .attr("class", "overlay")
+                .call(zoomListener)
+                // .on("mousedown", function () {
+                //     fadeUneditServer(1)();
+                // });
+
+            // Append a group which holds all nodes and which the zoom Listener can act upon.
+            svgGroup = baseSvg.append("g");
+
+            //定义跟节点
+            root = treeData;
+            root.x0 = viewerHeight / 2;
+            root.y0 = 0;
+
+            // Layout the tree initially and center on the root node.
+            update(root);
+            centerNode(root); // 居中根节点
+        }
+    }
+    
     // 递归遍历获取总节点数，以及名称最大的长度
     function visit(parent, visitFn, childrenFn) {
         if (!parent) return;
@@ -44,13 +110,6 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             }
         }
     }
-    visit(treeData, function(d) {
-        totalNodes++;
-        maxLabelLength = Math.max(d.name.length, maxLabelLength);
-
-    }, function(d) {
-        return d.children && d.children.length > 0 ? d.children : null;
-    });
 
     // 排序
     function sortTree() {
@@ -58,14 +117,15 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             return b.name.toLowerCase() <= a.name.toLowerCase() ? 1 : -1;
         });
     }
-    sortTree();
-
+    
     // 画节点
     function pan(domNode, direction) { // 动态收缩或者展开
         var speed = panSpeed;
+        var translateX = 0;
+        var translateY = 0;
         if (panTimer) {
             clearTimeout(panTimer);
-            translateCoords = d3.transform(svgGroup.attr("transform"));
+            var translateCoords = d3.transform(svgGroup.attr("transform"));
             if (direction == 'left' || direction == 'right') {
                 translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
                 translateY = translateCoords.translate[1];
@@ -73,8 +133,8 @@ treeJSON = d3.json("data.json", function(error, treeData) {
                 translateX = translateCoords.translate[0];
                 translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
             }
-            scaleX = translateCoords.scale[0];
-            scaleY = translateCoords.scale[1];
+            var scaleX = translateCoords.scale[0];
+            var scaleY = translateCoords.scale[1];
             scale = zoomListener.scale();
             svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
             d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
@@ -88,11 +148,12 @@ treeJSON = d3.json("data.json", function(error, treeData) {
 
     // 焦点转移
     function zoom() {
-        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        if (d3.event.sourceEvent.which !== 3) {
+            svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        }
     }
-    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]) // 设置最大和最小缩放比例
-                                         .on("zoom", zoom);
 
+    
     // 初始拖拽行为
     function initiateDrag(d, domNode) {
         draggingNode = d;
@@ -111,14 +172,14 @@ treeJSON = d3.json("data.json", function(error, treeData) {
         // 删除 子元素及其连接
         if (nodes.length > 1) {
             // 删除连接
-            links = tree.links(nodes);
-            nodePaths = svgGroup.selectAll("path.link")
+            var links = tree.links(nodes);
+            var nodePaths = svgGroup.selectAll("path.link")
                 .data(links, function(d) {
                     return d.target.id;
                 }).remove();
 
             // 删除子节点
-            nodesExit = svgGroup.selectAll("g.node")
+            var nodesExit = svgGroup.selectAll("g.node")
                 .data(nodes, function(d) {
                     return d.id;
                 }).filter(function(d, i) {
@@ -130,7 +191,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
         }
 
         // 删除与父元素的连接
-        parentLink = tree.links(tree.nodes(draggingNode.parent));
+        var parentLink = tree.links(tree.nodes(draggingNode.parent));
         svgGroup.selectAll('path.link').filter(function(d, i) {
             if (d.target.id == draggingNode.id) {
                 return true;
@@ -141,17 +202,11 @@ treeJSON = d3.json("data.json", function(error, treeData) {
         dragStarted = null;
     }
 
-    // 定义容器的样式和事件
-    var baseSvg = d3.select("#tree-container").append("svg")
-        .attr("width", viewerWidth)
-        .attr("height", viewerHeight)
-        .attr("class", "overlay")
-        .call(zoomListener);
 
     // 节点拖拽行为
     dragListener = d3.behavior.drag()
         .on("dragstart", function(d) {
-            if (d.type !== 'server') {
+            if (d3.event.sourceEvent.which !== 1 || editServerTreeId !== '' || d.type !== 'server') { // 左键按下拖动
                 return;
             }
             dragStarted = true;
@@ -159,7 +214,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             d3.event.sourceEvent.stopPropagation();
         })
         .on("drag", function(d) {
-            if (d.type !== 'server') {
+            if (d3.event.sourceEvent.which !== 1 || editServerTreeId !== '' || d.type !== 'server') {
                 return;
             }
             if (dragStarted) {
@@ -168,7 +223,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             }
 
             // get coords of mouseEvent relative to svg container to allow for panning
-            relCoords = d3.mouse($('svg').get(0));
+            var relCoords = d3.mouse($('svg').get(0));
             if (relCoords[0] < panBoundary) {
                 panTimer = true;
                 pan(this, 'left');
@@ -197,10 +252,10 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             updateTempConnector();
         })
         .on("dragend", function(d) {
-            if (d.type !== 'server') {
+            if (d3.event.sourceEvent.which !== 1 || editServerTreeId !== '' || d.type !== 'server') {
                 return;
             }
-            domNode = this;
+            var domNode = this;
             if (selectedNode) {
                 // now remove the element from the parent, and insert it into the new elements children
                 var index = draggingNode.parent.children.indexOf(draggingNode);
@@ -208,7 +263,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
                     draggingNode.parent.children.splice(index, 1);
                 }
                 if (typeof selectedNode.children !== 'undefined' || typeof selectedNode._children !== 'undefined') {
-                    if (typeof selectedNode.children !== 'undefined') {
+                    if (selectedNode.children) {
                         selectedNode.children.push(draggingNode);
                     } else {
                         selectedNode._children.push(draggingNode);
@@ -310,10 +365,13 @@ treeJSON = d3.json("data.json", function(error, treeData) {
     };
 
     // 重新定位节点
-    function centerNode(source) {
+    function centerNode(source, which) {
+        if (which === 3 ) {
+            return;
+        }
         scale = zoomListener.scale();
-        x = -source.y0;
-        y = -source.x0;
+        var x = -source.y0;
+        var y = -source.x0;
         x = x * scale + viewerWidth / 2;
         y = y * scale + viewerHeight / 2;
         d3.select('g').transition()
@@ -336,11 +394,11 @@ treeJSON = d3.json("data.json", function(error, treeData) {
     }
 
     // 点击节点
-    function click(d) {
+    function click(d, which) {
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);
         update(d);
-        centerNode(d);
+        centerNode(d, d3.event.which);
     }
 
     // 更新
@@ -361,7 +419,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
         };
         childCount(0, root);
         
-        var newHeight = d3.max(levelWidth) * 40; // 每一行的像素
+        var newHeight = d3.max(levelWidth) * linePx;
         tree = tree.size([newHeight, viewerWidth]);
 
         // Compute the new tree layout.
@@ -393,6 +451,22 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
+            .on('mousedown', function (d) {
+                if (d3.event.which !== 3 || d.type != "server" ) { return; } //鼠标右键
+                if (editServerTreeId !== d.treeId) {
+                    fadeUneditServer(0.1)(d); // 隐藏未点击的节点
+                    editServerTreeId = d.treeId;
+                    document.querySelector('#chart-content').dispatchEvent(
+                        new CustomEvent("editServer", { "detail": d.treeId, bubbles: true, cancelable: true})
+                    );
+                } else {
+                    editServerTreeId = '';
+                    fadeUneditServer(1)();
+                    document.querySelector('#chart-content').dispatchEvent(
+                        new CustomEvent("unEditServer")
+                    );
+                }
+            })
             .on('click', click);
 
         // 公司样式
@@ -411,7 +485,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
         // 服务器样式
         nodeEnter.filter('.server').append("circle")
             .attr('class', 'shape')
-            .attr("r", 10);
+            .attr("r", 10)
 
         // 属性
         nodeEnter.filter('.attribute').append("circle")
@@ -432,13 +506,13 @@ treeJSON = d3.json("data.json", function(error, treeData) {
                 return d.name;
             })
             .style("fill-opacity", 0);
-
-        // phantom node to give us mouseover in a radius around it
+            
+        // 增加提示范围圈
         nodeEnter.filter('.colony').append("circle")
             .attr('class', 'ghostCircle')
             .attr("r", 30)
             .style("fill", "red")
-            .attr("opacity", 0.2) // change this to zero to hide the target area
+            .attr("opacity", 0.1) // change this to zero to hide the target area
             .attr('pointer-events', 'mouseover')
             .on("mouseover", function(node) {
                 overCircle(node);
@@ -446,6 +520,7 @@ treeJSON = d3.json("data.json", function(error, treeData) {
             .on("mouseout", function(node) {
                 outCircle(node);
             });
+
         /* .enter()首次拼接节点元素end  */
 
         /* 设置修改样式 begin */
@@ -555,16 +630,42 @@ treeJSON = d3.json("data.json", function(error, treeData) {
         });
         /* 节点变动后转移各节点到新的位置begin */
     }
+    
+    //  隐藏未选中服务
+    var fadeUneditServer = function(opacity) {
+        return function(node) {
+            svgGroup.selectAll(".node")
+                .transition()
+                .style("opacity", function (d) {
+                    if (node && d.id === node.id){
+                        return 1;
+                    } else {
+                        return opacity;
+                    }
+                });
+        };
+    };
 
-    // Append a group which holds all nodes and which the zoom Listener can act upon.
-    var svgGroup = baseSvg.append("g");
 
-    //定义跟节点
-    root = treeData;
-    root.x0 = viewerHeight / 2;
-    root.y0 = 0;
+    var unselect = function() {
+        if (!editServerTreeId) return;
+        fadeUneditServer(1)();
+        editServerTreeId = '';
+    };
 
-    // Layout the tree initially and center on the root node.
-    update(root);
-    centerNode(root); // 居中根节点
-});
+    chart.unselect = unselect;
+
+    chart.diameter = function(value) {
+        if (!arguments.length) return viewerWidth;
+        viewerWidth = value;
+        return chart;
+    };
+
+    chart.data = function(value) {
+        if (!arguments.length) return treeData;
+        treeData = value;
+        return chart;
+    };
+
+    return chart;
+};

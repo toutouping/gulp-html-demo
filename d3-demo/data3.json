@@ -1,0 +1,389 @@
+{
+    "treeId": "1",
+    "name": "公司",
+    "type": "company",
+    "children": [
+        {
+            "treeId": "2",
+            "name": "集群一",
+            "type": "colony",
+            "children": [
+                {
+                    "treeId": "3",
+                    "name": "服务器1",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "8",
+                    "name": "服务器11",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "13",
+                    "name": "服务器12",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "18",
+                    "name": "服务器13",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "23",
+                    "name": "服务器2",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "treeId": "27",
+            "name": "集群二",
+            "type": "colony",
+            "children": [
+                {
+                    "treeId": "28",
+                    "name": "服务器4",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "33",
+                    "name": "服务器5",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "38",
+                    "name": "服务器5",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "43",
+                    "name": "服务器6",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "48",
+                    "name": "服务器7",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "53",
+                    "name": "服务器8",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "58",
+                    "name": "服务器9",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "63",
+                    "name": "服务器10",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "68",
+                    "name": "服务器11",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "73",
+                    "name": "服务器12",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                },
+                {
+                    "treeId": "78",
+                    "name": "服务器13",
+                    "type": "server",
+                    "children": [
+                        {
+                            "name": "product",
+                            "type": "product"
+                        },
+                        {
+                            "name": "cpuxxxxx",
+                            "type": "cpu"
+                        },
+                        {
+                            "name": "mainBoardxxxx",
+                            "type": "mainBoard"
+                        },
+                        {
+                            "name": "memory11111",
+                            "type": "memory"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
