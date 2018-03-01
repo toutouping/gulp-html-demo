@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mime": "~1.2.7"
+    "mime":"~1.2.7"
   }
 }

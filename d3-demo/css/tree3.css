@@ -152,3 +152,35 @@ line-height: 1.3;
   width: 960px;
   margin: auto;
 }
+
+/* tree-tool-tip */
+.tree-tool-tip {
+  position: fixed;
+  opacity: 0;
+  top: -100px;
+  left: -100px;
+  line-height: 1;
+  font-weight: bold;
+  padding: 10px 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: #eee;
+  border-radius: 4px;
+  z-index: 999;
+}
+.tree-tool-tip ul{
+  display:  block;
+  list-style: none;
+  padding-left: 0px;
+  font-size: 12px;
+  margin-bottom: 0px;
+}
+.tree-tool-tip ul li:hover {
+  background: #eee;
+  color: green;
+}
+.tree-tool-tip ul li {
+  height: 28px;
+  line-height: 28px;
+  padding: 0 10px;
+  cursor: pointer;
+}

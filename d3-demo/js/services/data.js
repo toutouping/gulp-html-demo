@@ -61,6 +61,22 @@ angular.module('ChartsApp').service('data', function ($http, $q, bus) {
      * @param {*} name 
      * @param {*} data 
      */
+    var getParentNodeById = function(treeId, data) {
+        data = data || jsonData;
+        var child = data.children || data._children;
+        if (!child) return null;
+        for (var i = child.length - 1; i >= 0; i--) {
+            if (child[i].treeId === treeId) return data;
+            var matchingNode = getParentNodeById(treeId, child[i]);
+            if (matchingNode) return matchingNode;
+        }
+    };
+
+    /**
+     * 根据节点名称获取父节点数据
+     * @param {*} name 
+     * @param {*} data 
+     */
     var getParentNodeByName = function(name, data) {
         data = data || jsonData;
         if (!data.children) return null;
@@ -72,35 +88,48 @@ angular.module('ChartsApp').service('data', function ($http, $q, bus) {
     };
 
     /**
-     * 更新节点信息
-     * @param {Array}  path e.g. ['foo', 'bar', 'baz']
-     * @param {Object} updatedNode New node data to use
-     * @param {Object} cursor
+     * 根据节点名称获取节点数据
+     * @param {*} treeId 
+     * @param {*} data 
      */
-    var updateNode = function(name, updatedNode) {
-        var node = getNodeByName(name);
-        updateDependencies(node.name, updatedNode.name);
-        for (var i in updatedNode) {
-            if (updatedNode.hasOwnProperty(i) && i !== 'children' && i !== 'parent' && i !== 'details') {
-                node[i] = updatedNode[i];
-            }
+    var getNodeById = function(treeId, data) {
+        data = data || jsonData;
+        if (data.treeId === treeId) {
+            return data;
+        }
+        if (!data.children && !data._children) return null;
+        var child = data.children || data._children;
+        for (var i = child.length - 1; i >= 0; i--) {
+            var matchingNode = getNodeById(treeId, child[i]);
+            if (matchingNode) return matchingNode;
         }
     };
 
     /**
+     * 更新节点信息
+     */
+    var updateNodeById = function(treeId, updateNode) {
+        var node = getNodeById(treeId);
+        for (var i in updateNode) {
+            if (updateNode.hasOwnProperty(i) && i !== 'children' && i !== '_children') {
+                node[i] = updateNode[i];
+            }
+        }
+    };
+    /**
      * 更新依赖节点名称
-     * @param {String} name
-     * @param {String} newName
+     * @param {String} treeId
+     * @param {String} newId
      * @param {Object} cursor
      */
-    var updateDependencies = function(name, newName, cursor) {
+    var updateDependenciesById = function(treeId, newId, cursor) {
         cursor = cursor || jsonData;
 
-        updateNodeDependency(name, newName, cursor);
-
-        if(typeof(cursor.children) !== 'undefined' && cursor.children.length) {
-            cursor.children.forEach(function (child) {
-                updateDependencies(name, newName, child);
+        updateNodeDependencyById(treeId, newId, cursor);
+        var child = cursor.children || cursor._children;
+        if(typeof(child) !== 'undefined' && child.length) {
+            child.forEach(function (child) {
+                updateDependenciesById(treeId, newId, child);
             });
         }
     };
@@ -108,8 +137,30 @@ angular.module('ChartsApp').service('data', function ($http, $q, bus) {
     /**
      * 移除依赖节点
      */
-    var removeDependencies = function(name) {
-        updateDependencies(name);
+    var removeDependenciesById = function(treeId) {
+        updateDependenciesById(treeId);
+    };
+
+
+    /**
+     * 更新或者移除依赖节点
+     * @param {String} treeId
+     * @param {String} newId
+     * @param {Object} node
+     */
+    var updateNodeDependencyById = function(treeId, newId, node) {
+        if (typeof(node.dependsOn) === 'undefined') {
+            return;
+        }
+        var pos = node.dependsOn.indexOf(treeId);
+        if (pos === -1) return;
+        if (newId) {
+            // rename dependency
+            node.dependsOn[pos] = newId;
+        } else {
+            // remove dependency
+            node.dependsOn.splice(pos, 1);
+        }
     };
 
     /**
@@ -148,6 +199,33 @@ angular.module('ChartsApp').service('data', function ($http, $q, bus) {
     /**
      * 移除节点
      */
+    var removeNodeById = function(treeId) {
+        var parentNode = getParentNodeById(treeId);
+        if (!parentNode) return false;
+
+        if (!parentNode.children && !parentNode._children) return null;
+        var childList = parentNode.children || parentNode._children;
+
+        for (var i = 0, length = childList.length; i < length; i++) {
+            var child = childList[i];
+            if (child.treeId === treeId) {
+                // we're in the final Node
+                // remove the node (and children) from dependencies
+                 getBranchIds(child).map(updateDependenciesById);
+                // remove the node
+                if(parentNode.children) {
+                    return parentNode.children.splice(i, 1);
+                }else{
+                    return parentNode._children.splice(i, 1);
+                }
+                
+            }
+        }
+    };
+
+    /**
+     * 移除节点
+     */
     var removeNode = function(name) {
         var parentNode = getParentNodeByName(name);
         if (!parentNode) return false;
@@ -172,6 +250,21 @@ angular.module('ChartsApp').service('data', function ($http, $q, bus) {
         addNode(newParentNodeName, removedNodes[0]);
     };
 
+    
+    /**
+     * 根据节点名称获取节点集合
+     */
+    var getBranchIds = function(node) {
+        var ids = [node.treeId];
+        var child = node.children || node._children;
+        if (child) {
+            child.forEach(function(child) {
+                ids = ids.concat(getBranchIds(child));
+            });
+        }
+        return ids;
+    };
+
     /**
      * 根据节点名称获取节点集合
      */
@@ -187,11 +280,12 @@ angular.module('ChartsApp').service('data', function ($http, $q, bus) {
 
     return {
         fetchJsonData: fetchJsonData,
+        updateNodeById: updateNodeById,
+        removeNodeById: removeNodeById,
         getJsonData: getJsonData,
         setJsonData: setJsonData,
         emitRefresh: emitRefresh,
         getNodeByName: getNodeByName,
-        updateNode: updateNode,
         addNode: addNode,
         removeNode: removeNode,
         moveNode: moveNode

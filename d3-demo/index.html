@@ -9,6 +9,14 @@
 <body ng-app="ChartsApp">
 
   <div ng-controller="chartCtrl">
+    <div class="tree-tool-tip" id="tree-tool-tip">
+      <ul>
+        <li ng-mousedown="toEditServer($event)" data-id=''>修改</li>
+        <li ng-mousedown="deleteServer($event)" data-id=''>删除</li>
+        <li ng-mousedown="cancelEditServer($event)" data-id=''>取消</li>
+      </ul>
+    </div>
+
     <div class="chart-content" id="chart-content">
         <tree-chart data="data"></tree-chart>
     </div>

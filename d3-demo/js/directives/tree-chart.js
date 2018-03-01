@@ -17,15 +17,26 @@ angular.module('ChartsApp').directive('treeChart', function(bus) {
                 }
 
                 chart.diameter($(document).width() - 300).data(scope.data);
-
+               
                 d3.select(element[0])
                     .call(chart);
             });
 
-            bus.on('unEditChart', function() {
-                chart.unselect();
+            bus.on('focusNode', function(originalNode) {
+                chart.focusNode(originalNode);
             });
 
+            bus.on('editServerChart', function(currentNode) {
+                chart.editServerChart(currentNode);
+            });
+
+            bus.on('unEditServerChart', function() {
+                chart.unEditServerChart();
+            });
+
+            bus.on('fiterNameChange', function(nameFilter) {
+                chart.fiterNameChange(nameFilter);
+            });
         }
     };
 });

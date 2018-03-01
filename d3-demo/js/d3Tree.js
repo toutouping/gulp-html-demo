@@ -62,7 +62,6 @@ d3.chart.d3Tree = function() {
             visit(treeData, function(d) {
                 totalNodes++;
                 maxLabelLength = Math.max(d.name.length, maxLabelLength);
-
             }, function(d) {
                 return d.children && d.children.length > 0 ? d.children : null;
             });
@@ -89,11 +88,20 @@ d3.chart.d3Tree = function() {
             root = treeData;
             root.x0 = viewerHeight / 2;
             root.y0 = 0;
-
+            editServerTreeId = '';
             // Layout the tree initially and center on the root node.
             update(root);
             centerNode(root); // 居中根节点
+        }else{
+            //定义跟节点
+            root = treeData;
+            root.x0 = viewerHeight / 2;
+            root.y0 = 0;
+            editServerTreeId = '';
+            // Layout the tree initially and center on the root node.
+            update(root);
         }
+
     }
     
     // 递归遍历获取总节点数，以及名称最大的长度
@@ -152,7 +160,6 @@ d3.chart.d3Tree = function() {
             svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
         }
     }
-
     
     // 初始拖拽行为
     function initiateDrag(d, domNode) {
@@ -201,7 +208,6 @@ d3.chart.d3Tree = function() {
 
         dragStarted = null;
     }
-
 
     // 节点拖拽行为
     dragListener = d3.behavior.drag()
@@ -381,25 +387,39 @@ d3.chart.d3Tree = function() {
         zoomListener.translate([x, y]);
     }
 
-    // Toggle children function
-    function toggleChildren(d) {
+    function hideChildren(d){
         if (d.children) {
             d._children = d.children;
             d.children = null;
-        } else if (d._children) {
+        }
+    }
+
+    function showChildren(d){
+        if (d._children) {
             d.children = d._children;
             d._children = null;
+        }
+    }
+
+    // Toggle children function
+    function toggleChildren(d) {
+        if (d.children) {
+            hideChildren(d);
+        } else if (d._children) {
+            showChildren(d);
         }
         return d;
     }
 
     // 点击节点
-    function click(d, which) {
-        if (d3.event.defaultPrevented) return; // click suppressed
+    function click(d) {
+        // if (d3.event && d3.event.defaultPrevented) return; // click suppressed
+        if(d3.event.which == 3 || editServerTreeId) return;
         d = toggleChildren(d);
         update(d);
-        centerNode(d, d3.event.which);
+        centerNode(d, d3.event && d3.event.which);
     }
+    
 
     // 更新
     function update(source) {
@@ -453,19 +473,22 @@ d3.chart.d3Tree = function() {
             })
             .on('mousedown', function (d) {
                 if (d3.event.which !== 3 || d.type != "server" ) { return; } //鼠标右键
-                if (editServerTreeId !== d.treeId) {
-                    fadeUneditServer(0.1)(d); // 隐藏未点击的节点
-                    editServerTreeId = d.treeId;
-                    document.querySelector('#chart-content').dispatchEvent(
-                        new CustomEvent("editServer", { "detail": d.treeId, bubbles: true, cancelable: true})
-                    );
-                } else {
-                    editServerTreeId = '';
-                    fadeUneditServer(1)();
-                    document.querySelector('#chart-content').dispatchEvent(
-                        new CustomEvent("unEditServer")
-                    );
-                }
+                d3.event.stopPropagation();
+                // if (editServerTreeId !== d.treeId) {
+                    // fadeUneditServer(0.1)(d); // 隐藏未点击的节点
+                    // editServerTreeId = d.treeId;
+                    // document.querySelector('#chart-content').dispatchEvent(
+                    //     new CustomEvent("editServer", { "detail": d.treeId, bubbles: true, cancelable: true})
+                    // );
+                    // editServerTreeId = d.treeId;
+                    showToolTip(d.treeId);
+                // } else {
+                    // editServerTreeId = '';
+                    // fadeUneditServer(1)();
+                    // document.querySelector('#chart-content').dispatchEvent(
+                    //     new CustomEvent("unEditServer")
+                    // );
+                // }
             })
             .on('click', click);
 
@@ -631,13 +654,25 @@ d3.chart.d3Tree = function() {
         /* 节点变动后转移各节点到新的位置begin */
     }
     
+    // 
+    var showToolTip = function (id) {
+        $('#tree-tool-tip').css({'opacity':'1','top': d3.event.offsetY - 3,'left': d3.event.offsetX+ 10});
+        $('#tree-tool-tip li').attr('data-id', id);
+    }
+
+    // 
+    var hideToolTip = function (id) {
+        $('#tree-tool-tip').css({'opacity':'0','top': -100,'left': -100});
+        $('#tree-tool-tip li').attr('data-id', '');
+    }
+
     //  隐藏未选中服务
     var fadeUneditServer = function(opacity) {
-        return function(node) {
+        return function() {
             svgGroup.selectAll(".node")
                 .transition()
                 .style("opacity", function (d) {
-                    if (node && d.id === node.id){
+                    if (d.treeId === editServerTreeId || (d.parent && d.parent.treeId === editServerTreeId)){
                         return 1;
                     } else {
                         return opacity;
@@ -646,14 +681,37 @@ d3.chart.d3Tree = function() {
         };
     };
 
+    var editServerChart = function(currentNode) {
+        editServerTreeId = currentNode.treeId;
+        // if(currentNode.parent) {
+        //   expand(currentNode.parent);
+        //   update(root);
+        // }
+        centerNode(currentNode);
+        fadeUneditServer(0.1)();
+    };
 
-    var unselect = function() {
-        if (!editServerTreeId) return;
+    var unEditServerChart = function() {
         fadeUneditServer(1)();
         editServerTreeId = '';
     };
 
-    chart.unselect = unselect;
+    var focusNode = function(originalNode) {
+        // var currentNode = svgGroup.selectAll("g.node")
+        //    .filter(function(d, i) {
+        //        if (d.treeId == treeId) {
+        //            return true;
+        //        }
+        //        return false;
+        //    });
+        centerNode(originalNode);
+    }
+
+    chart.focusNode = focusNode;
+
+    chart.unEditServerChart = unEditServerChart;
+
+    chart.editServerChart = editServerChart;
 
     chart.diameter = function(value) {
         if (!arguments.length) return viewerWidth;
@@ -666,6 +724,10 @@ d3.chart.d3Tree = function() {
         treeData = value;
         return chart;
     };
+
+    chart.fiterNameChange = function(currentNode) {
+        click(currentNode);
+    }
 
     return chart;
 };
