@@ -41,7 +41,6 @@ angular.module('ChartsApp').controller('chartCtrl', function ($scope,$window, bu
                 bus.emit('editServerChart', currentNode); // 至灰非编辑界面
             }else{
                 $scope.node = null;
-                $scope.filter.filterName = '';
                 bus.emit('unEditServerChart');
             }
         }
