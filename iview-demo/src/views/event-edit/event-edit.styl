@@ -1,0 +1,76 @@
+.event-edit {
+    position: absolute;
+    top: 40px;
+    left: 24px;
+    right: 0px;
+    padding: 10px 20px;
+    bottom: 0px;
+    z-index: 100;
+    .panel {
+      .edit-title {
+        padding: 10px 0;
+      }  
+      .edit-main {
+        padding: 15px;
+        border-style: solid;
+        border-width: 1px;
+        font-size: 12px;
+        background: #133760;
+        border-color: #245690;
+        color: #6ac5fe;
+        & >>> .ivu-form {
+          .ivu-form-item-label {
+            color: #89badd;
+            font-size: 13px;
+          }
+          .ivu-form-item-content {
+            width: 250px;
+          }
+          .ivu-form-item {
+            margin-bottom: 15px;  
+          }
+        }
+      }
+    }
+}
+
+body.theme-dark {
+  .event-edit {
+    background: radial-gradient(50% 50%, #2065ac, #153c70);
+  }
+  .panel {
+    .edit-title {
+      padding: 10px 0;
+    }  
+    .edit-main {
+      background: #133760;
+      border-color: #245690;
+      color: #6ac5fe;
+      & >>> .ivu-form {
+        .ivu-form-item-label {
+          color: #89badd;
+        }
+      }
+    }
+  }
+}
+
+body.theme-light {
+  .event-edit {
+    background: #ffffff;
+  }
+  .panel {
+    .edit-title {
+      padding: 10px 0;
+    }  
+    .edit-main {
+      background: #f4f7fd;
+      border: 1px solid #dfe4e8;
+      & >>> .ivu-form {
+        .ivu-form-item-label {
+          color: #666e79;
+        }
+      }
+    }
+  }
+}

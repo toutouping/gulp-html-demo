@@ -1,0 +1,303 @@
+body.theme-dark {
+  color: #ffffff;
+  background-color: #245893;
+  background: -webkit-linear-gradient(50% 50%,#2065ac,#153c70);
+  background: -o-linear-gradient(50% 50%,#2065ac,#153c70);
+  background: -moz-linear-gradient(50% 50%,#2065ac,#153c70);
+  background: linear-gradient(50% 50%,#2065ac,#153c70);
+  /* input */
+  .ivu-input {
+    padding: 0 5px;
+    font-size: 12px;
+    color: #fff;
+    border: 1px solid #41a4e2;
+    background-color: #0d5990;
+    border-radius: 2px;
+  }
+  input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: #4a93d0;
+  }
+  input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #9dd7ff;
+  }
+  input::-moz-placeholder, textarea::-moz-placeholder {
+    color: #9dd7ff;
+  }
+  input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color: #9dd7ff;
+  }
+  /* selection */
+  .ivu-select {
+    &.ivu-select-multiple {
+      max-width: 100%;
+      width: auto;
+    }
+    .ivu-select-selection {
+      color: #fff;
+      border: 1px solid #41a4e2;
+      background-color: #0d5990;
+      border-radius: 2px;
+      .ivu-select-arrow {
+        color: #5994d6;
+      }
+      .ivu-select-placeholder{
+        color: #9dd7ff;
+      }
+    }
+    &.ivu-select-multiple .ivu-select-input {
+      height: auto;
+      line-height: inherit;  
+    }
+  }
+  /* ivu-date-picker */
+  .ivu-date-picker {
+    .ivu-input-icon {
+      color: #5994d6;
+    }
+  }
+  /* menu */
+  .ivu-menu {
+    color: #81c6f1;
+  }
+  .ivu-menu-light {
+    background: #1a4372;
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+    color: #fff;
+    background: #286599;
+    z-index: 2;
+  }
+  .ivu-menu-vertical.ivu-menu-light:after {
+    background: none;
+  }
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+    left: 0;  
+    right: auto;
+    background: #36b8fe;
+  }
+  .ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title {
+    padding: 10px 24px 10px 10px;
+  }
+
+  /* breadcrumb */
+  .ivu-breadcrumb {
+      color: #fff;
+      font-size: 14px;
+      .ivu-breadcrumb-item-separator {
+        color: #acb3bf;
+        margin: 0 5px;
+      }
+  }
+  .ivu-breadcrumb a {
+    color: #acb3bf;
+    font-weight: 400;
+    font-size: 14px;
+  }
+  .ivu-breadcrumb > span:last-child, .ivu-breadcrumb > span:last-child a {
+      color: #fff;
+      font-size: 14px;
+  }
+
+  .ivu-table {
+    background: none;
+  }
+  /* table */
+  .ivu-table-wrapper {
+    border: none;  
+  }
+  .ivu-table-fixed::before, .ivu-table-fixed-right::before {
+    height: 0px;
+    width: 0px;
+  }
+  .ivu-table:before {
+    content: '';
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: none;
+    z-index: 1;
+  }
+  .ivu-table:after {
+    content: '';
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: none;
+    z-index: 1;
+  }
+  .ivu-table th {
+    color: #2db7f5;
+    border-top: 2px solid #245690;
+    border-bottom: 2px solid #245690;
+    background: #103561;
+    height: 42px;
+  }
+  .ivu-table td {
+    color: #ffffff;
+    background: #123661;
+    border-bottom: 1px solid #245690;
+    background: #123663;
+  }
+  tr.ivu-table-row-hover td {
+    background: #316cad;
+  }
+
+  /** page **/
+  
+  .ivu-page {
+    color: #5d8ab9;
+    .ivu-page-item, .ivu-page-prev, .ivu-page-next{
+      border: 1px solid #4082e6;
+      background: rgba(0,15,30,.4);
+      a {
+        color: #5d8ab9;
+      }
+      &:hover {
+        background-color: #55b1eb;
+        a {
+          color: #fff;
+        }
+      }
+    }
+    .ivu-page-item-active {
+      background-color: #55b1eb;
+      border: 1px solid #2a5f9c;
+      a {
+        color: #fff;
+      }
+    }
+    .ivu-page-options-elevator input {
+      color: #5d8ab9;
+      border: 1px solid #4082e6;
+      background: rgba(0,15,30,.4);
+    }
+    .ivu-select-selection {
+      color: #5d8ab9;
+      border: 1px solid #4082e6;
+      background: rgba(0,15,30,.4);
+    }
+  }
+  /** button **/
+  .ivu-btn-primary {
+    color: #9dd7ff;
+    background: #176596;
+    border-color: #1681c4;
+    &:hover {
+      color: #fff;
+      border-color: #53b9f9;
+      background: #53b9f9;
+    }
+  }
+  
+  .ivu-dropdown {
+    a {
+      color: #5dbbff;
+    }
+  }
+
+  /** tooltip **/
+  .ivu-tooltip-popper {
+    .ivu-tooltip-content {
+      .ivu-tooltip-arrow {
+        border-bottom-color: #226eaf;
+      }
+      .ivu-tooltip-inner {
+        max-width: 400px;
+        background-color: #226eaf; 
+        color: #fff;
+      }
+    }
+  }
+  .ivu-select-dropdown {
+    border-radius: 2px;
+    border: 1px solid rgba(65,164,226,.34);
+    background-color: #1c77b8;
+    .ivu-dropdown-item {
+      color: #fff;
+    }
+    .ivu-select-item {
+      color: #fff;
+      font-size: 12px;
+    }
+    .ivu-select-item-selected, .ivu-select-item-selected:hover,.ivu-select-item:hover, .ivu-dropdown-item:hover{
+      background-color: #3092d9;
+    }
+    .ivu-select-item-focus {
+      font-weight: bold;
+      background-color: #3092d9;
+    }
+
+    &.ivu-date-picker-transfer{
+      .ivu-time-picker-cells-cell:hover {
+        color: #2d8cf0;
+        background: #f3f3f3;
+      }
+    }
+  }
+  /** **/
+  .ivu-checkbox-group {
+    .ivu-checkbox-inner {
+      background: #2276bf;
+    }
+    .ivu-checkbox-disabled.ivu-checkbox-checked .ivu-checkbox-inner {
+      background-color: #2276bf;
+      border-color: #2d8cf0;
+    }
+  }
+  /** .ivu-date-picker **/
+  .ivu-date-picker-cells-cell-range:before {
+    background: #97bfe4;
+  }
+  .ivu-date-picker-cells-cell:hover em {
+    background: #2d8cf0;
+  }
+  .ivu-message {
+    .ivu-message-notice-content {
+      background: #009688;
+    }
+  }
+
+  .column-select{
+    width: 360px;
+    padding: 5px;
+    max-height: 312px;
+    overflow-y: auto;
+    .title {
+      display: inline-block;
+      padding: 10px 0 3px 0px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #7bc5f5;
+      &:first-child {
+        padding-top: 0px;  
+      }
+    }
+    .line {
+      height: 1px;
+      margin: 5px 0;
+      background-color: #7bc5f5;  
+    }
+    .ivu-checkbox-group {
+      .ivu-col {
+        padding: 3px 0;  
+      }
+    }
+    .ivu-checkbox-disabled .ivu-checkbox-inner {
+      border-color: #2d8cf0;
+      background: #2276bf;
+    }
+    .ivu-checkbox-disabled + span {
+      border-color: #2d8cf0;
+      background: #2276bf;
+    }
+    .ivu-checkbox-disabled.ivu-checkbox-checked .ivu-checkbox-inner {
+      border-color: #2d8cf0;
+      background: #2276bf;
+    }
+  }
+  
+}

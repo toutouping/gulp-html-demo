@@ -1,0 +1,7 @@
+const SAVE_LOGIN_USER = 'SAVE_LOGIN_USER';
+const SAVE_THEME = 'SAVE_THEME';
+
+export default {
+  SAVE_LOGIN_USER,
+  SAVE_THEME
+};
