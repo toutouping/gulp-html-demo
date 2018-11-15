@@ -4,7 +4,6 @@ body.theme-light {
       width: 7px;
       height: 7px;
   }
-
   ::-webkit-scrollbar-track-piece {
       background-color: rgba(171, 185, 181, 0.2);
       -webkit-border-radius: 6px;
@@ -21,12 +20,17 @@ body.theme-light {
       background-color: rgba(171, 185, 181, 0.8);
       -webkit-border-radius: 6px;
   }
-  
-  /* input */
-  .ivu-input {
-    padding: 0 5px;
+  .ivu-poptip {
+    width: 100%;
+    .ivu-poptip-rel {
+      width: 100%;  
+    }
+  }
+  .ivu-input-wrapper {
+    .ivu-input {
     font-size: 12px;
     border-radius: 2px;
+    }
   }
   /* selection */
   .ivu-select {
@@ -141,30 +145,14 @@ body.theme-light {
       font-weight: bold;
     }
   }
-
-  .column-select{
-    width: 360px;
-    padding: 5px;
-    max-height: 312px;
-    overflow-y: auto;
-    .title {
-      display: inline-block;
-      padding: 10px 0 3px 0px;
-      font-size: 12px;
-      font-weight: bold;
-      &:first-child {
-        padding-top: 0px;  
-      }
+  .el-range-editor--mini.el-input__inner {
+    height: 24px;
+    line-height: 16px;
+    .el-range__icon {
+      line-height: 16px;
     }
-    .line {
-      height: 1px;
-      margin: 5px 0;
-    }
-    .ivu-checkbox-group {
-      .ivu-col {
-        padding: 3px 0;  
-      }
+    .el-range-separator {
+      line-height: 16px;
     }
   }
-  
 }

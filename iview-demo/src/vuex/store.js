@@ -10,7 +10,7 @@ let state = {
   user: {
     userName: ''
   },
-  theme: 'light'
+  isThemeDark: true
 };
 
 export default new Vuex.Store({

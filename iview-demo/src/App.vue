@@ -51,7 +51,7 @@ export default {
       position: relative;
       display: flex;
       flex-direction: column;
-      width: calc(100vw - 160px);
+      min-width: calc(100vw - 160px);
       vertical-align: top;
       padding-left: 24px;
       font-size: 14px;

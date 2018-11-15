@@ -22,7 +22,7 @@
   export default {
     data () {
       return {
-        themeDark: false,
+        themeDark: store.state.isThemeDark,
         showMenuFlag: true,
         loginUser: null
       };
@@ -37,7 +37,7 @@
     methods: {
       ...mapActions([
         'saveLoginUser',
-        'saveTheme'
+        'saveIsThemeDark'
       ]),
       logout () {
         this.saveLoginUser({});
@@ -45,7 +45,7 @@
       },
       changeSkin () {
         this.themeDark = !this.themeDark;
-        this.saveTheme(this.themeDark ? 'dark' : 'light');
+        this.saveIsThemeDark(this.themeDark);
         document.body.className = this.themeDark ? 'theme-dark' : 'theme-light';
       }
     }

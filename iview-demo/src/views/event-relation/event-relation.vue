@@ -1,6 +1,6 @@
 <template>
   <div class="event-relation">
-    <div class="filter-content">
+    <div class="filter-content" :class="{'full-screen': isFullScreen}">
       <Row>
         <Col span="5">
           <DatePicker :value="period" format="yyyy/MM" type="daterange" placement="bottom-end" placeholder="请选择时间范围" style="width: 220px"></DatePicker>
@@ -12,7 +12,7 @@
         </Col>
       </Row>
     </div>
-    <div ref="relationChart" class="relation-chart"></div>
+    <div ref="relationChart" class="relation-chart" :class="{'full-screen': isFullScreen}"></div>
   </div>
 </template>
 

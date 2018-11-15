@@ -1,4 +1,5 @@
 import api from 'api/index';
+import 'element-ui/lib/theme-chalk/index.css';
 
 export default {
   data () {
@@ -8,13 +9,19 @@ export default {
       showImportModal: false,
       columnObject: [],
       seleColumnList: ['事件编号', '事件名称'],
+      isDefined: false,
+      value6: '',
       formItem: {
-        c12: '',
-        date: '',
+        c11111111111: '',
         c14: '',
+        timeInterval: [], // 刷卡时间
         c3: ['L5'],
         c27: '',
+        interval: '',
         c29: ''
+      },
+      pickerOptions: {
+        shortcuts: []
       },
       columnsList: [],
       dataList: [
@@ -40,6 +47,7 @@ export default {
   created () {
     let ths = this;
 
+    ths._initShortcuts();
     ths.columnObject = ths._initColumn();
     ths.columnsList = ths._getColumnList();
   },
@@ -49,11 +57,17 @@ export default {
         console.log(res);
       });
     },
+    changeDefined () {
+      this.isDefined = !this.isDefined;
+    },
     rowClassName (row, index) {
       return 'demo-table-info-row';
     },
     importCancel () {
       this.$Message.info('importCancel');
+    },
+    selectDate (item) {
+      this.formItem.interval = '最近' + item.label;
     },
     importConfirm () {
       this.$Message.info('importConfirm');
@@ -358,6 +372,54 @@ export default {
             key: 'c46'
           }
         ]
+      }];
+    },
+    _initShortcuts () {
+      this.pickerOptions.shortcuts = [{
+        text: '最近一小时',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+
+          start.setTime(start.getTime() - 3600 * 1000);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一天',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+
+          start.setTime(start.getTime() - 3600 * 1000 * 24);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一周',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一个月',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+          picker.$emit('pick', [start, end]);
+        }
+      }, {
+        text: '最近一季度',
+        onClick (picker) {
+          const end = new Date();
+          const start = new Date();
+
+          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+          picker.$emit('pick', [start, end]);
+        }
       }];
     }
   }

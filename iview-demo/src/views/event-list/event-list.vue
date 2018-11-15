@@ -3,30 +3,20 @@
     <div class="event-list">
       <div class="form-wrapper">
         <Form ref="formItem" :model="formItem" inline :label-width="80">
-            <FormItem prop="input" label="影响业务：">
-              <Select :size="'small'" clearable v-model="formItem.select" placeholder="请选择涉及系统">
+            <FormItem label="影响业务：">
+              <Select clearable v-model="formItem.c11111111111" placeholder="请选择涉及系统">
                   <Option value="beijing">New York</Option>
                   <Option value="shanghai">London</Option>
                   <Option value="shenzhen">Sydney</Option>
               </Select>
             </FormItem>
-            <FormItem prop="input" label="影响时长：" class="clock">
-              <Icon class="clock-icon" type="ios-clock-outline"></Icon>
-              <Select :size="'small'" clearable v-model="formItem.c14" placeholder="请输入影响时长">
-                <Option value="1">&lt; 15min</Option>
-                <Option value="2">15 ~ 30min</Option>
-                <Option value="3">30 ~ 60min</Option>
-                <Option value="4">1 ~ 4h</Option>
-                <Option value="5">&gt; 4h</Option>
-              </Select>
+            <FormItem label="引发原因：">
+                <Input clearable v-model="formItem.c27" placeholder="请输入事件原因..."></Input>
             </FormItem>
-            <FormItem prop="input" label="引发原因：">
-                <Input :size="'small'" clearable v-model="formItem.c27" placeholder="请输入事件原因..."></Input>
+            <FormItem label="原因团队：">
+                <Input clearable v-model="formItem.c29" placeholder="请输入原因团队..."></Input>
             </FormItem>
-            <FormItem prop="input" label="原因团队：">
-                <Input :size="'small'" clearable v-model="formItem.c29" placeholder="请输入原因团队..."></Input>
-            </FormItem>
-            <FormItem prop="input" label="事件级别：">
+            <FormItem label="事件级别：">
               <CheckboxGroup class="lever" size="default" v-model="formItem.c3">
                   <Checkbox label="L1" size="default"></Checkbox>
                   <Checkbox label="L2" size="default"></Checkbox>
@@ -34,6 +24,20 @@
                   <Checkbox label="L4" size="default"></Checkbox>
                   <Checkbox label="L5" size="default"></Checkbox>
               </CheckboxGroup>
+            </FormItem>
+            <FormItem label="影响时长：">
+              <el-date-picker :clearable="true"
+                v-model="formItem.timeInterval"
+                type="datetimerange"
+                align="right"
+                size = "mini"
+                unlink-panels
+                :default-time="['00:00:00', '23:59:59']"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions">
+              </el-date-picker>
             </FormItem>
         </Form>
       </div>

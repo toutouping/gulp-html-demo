@@ -6,6 +6,7 @@ export default {
     return {
       period: ['2016-01-01', '2016-02-15'],
       groupName: '1',
+      isFullScreen: false,
       groupList: [{
         value: '1',
         label: '运行调度室'
@@ -32,7 +33,7 @@ export default {
   },
   computed: {
     listenStageTheme () {
-      return this.$store.state.theme;
+      return this.$store.state.isThemeDark;
     }
   },
   watch: {
@@ -44,9 +45,32 @@ export default {
     }
   },
   methods: {
+    _getMyTool (isFullScreen) {
+      let ths = this;
+      let theme = ths.$store.state.isThemeDark ? '_dark.png' : '_light.png';
+
+      return {
+        show: true,
+        title: isFullScreen ? '切换为全屏' : '退出全屏',
+        icon: isFullScreen ? 'image://static/img/outscreen' + theme : 'image://static/img/fullscreen' + theme,
+        onclick: function () {
+          ths.isFullScreen = !ths.isFullScreen;
+          ths.option = ths.myChart.getOption();
+          ths.option.toolbox[0].feature.myTool = ths._getMyTool(ths.isFullScreen);
+          ths.$nextTick(function () {
+            ths.myChart = null;
+            ths.$refs.trendChart.innerHTML = '';
+            ths.$refs.trendChart.removeAttribute('_echarts_instance_');
+            ths.$refs.trendChart.removeAttribute('style');
+            ths.myChart = echarts.init(ths.$refs.trendChart);
+            ths.myChart.setOption(ths.option);
+          }, 500);
+        }
+      };
+    },
     _getOptions () {
       let ths = this;
-      let theme = ths.$store.state.theme;
+      let isThemeDark = ths.$store.state.isThemeDark;
 
       return {
         title: {
@@ -59,7 +83,7 @@ export default {
           type: 'plain',
           padding: [10, 0, 0, 0],
           textStyle: {
-            color: theme === 'dark' ? '#ffffff' : '#333'
+            color: isThemeDark ? '#ffffff' : '#333'
           }
         }],
         tooltip: {
@@ -71,18 +95,19 @@ export default {
           y: 0.7,
           r: 1,
           colorStops: [{
-            offset: 0, color: theme === 'dark' ? '#2065ac' : '#ffffff'
+            offset: 0, color: isThemeDark ? '#2065ac' : '#ffffff'
           }, {
-            offset: 1, color: theme === 'dark' ? '#153c70' : '#ffffff'
+            offset: 1, color: isThemeDark ? '#153c70' : '#ffffff'
           }],
           globalCoord: false
         },
         toolbox: {
           show: true,
           iconStyle: {
-            borderColor: theme === 'dark' ? '#ffffff' : '#333'
+            borderColor: isThemeDark ? '#ffffff' : '#333'
           },
           feature: {
+            myTool: ths._getMyTool(ths.isFullScreen),
             magicType: {
               type: ['line', 'bar']
             },
@@ -95,12 +120,12 @@ export default {
           name: '时间/月',
           axisLine: {
             lineStyle: {
-              color: theme === 'dark' ? '#ffffff' : '#333'
+              color: isThemeDark ? '#ffffff' : '#333'
             }
           },
           axisLabel: {
             textStyle: {
-              color: theme === 'dark' ? '#ffffff' : '#333'
+              color: isThemeDark ? '#ffffff' : '#333'
             }
           },
           data: ['201801', '201802', '201803', '201804', '201805', '201806', '201807', '201808', '201809', '2018010', '2018011', '2018012']
@@ -110,7 +135,7 @@ export default {
           name: '事件量/个',
           axisLine: {
             lineStyle: {
-              color: theme === 'dark' ? '#ffffff' : '#333'
+              color: isThemeDark ? '#ffffff' : '#333'
             }
           },
           splitLine: {
@@ -120,7 +145,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              color: theme === 'dark' ? '#ffffff' : '#333'
+              color: isThemeDark ? '#ffffff' : '#333'
             }
           }
         },

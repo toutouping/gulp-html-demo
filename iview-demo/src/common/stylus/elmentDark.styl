@@ -5,14 +5,24 @@ body.theme-dark {
   background: -o-linear-gradient(50% 50%,#2065ac,#153c70);
   background: -moz-linear-gradient(50% 50%,#2065ac,#153c70);
   background: linear-gradient(50% 50%,#2065ac,#153c70);
+  .ivu-poptip {
+    width: 100%;
+    .ivu-poptip-rel {
+      width: 100%;  
+    }
+  }
   /* input */
-  .ivu-input {
-    padding: 0 5px;
-    font-size: 12px;
-    color: #fff;
-    border: 1px solid #41a4e2;
-    background-color: #0d5990;
-    border-radius: 2px;
+  .ivu-input-wrapper {
+    .ivu-input {
+      font-size: 12px;
+      color: #fff;
+      border: 1px solid #41a4e2;
+      background-color: #0d5990;
+      border-radius: 2px;
+    }
+    .ivu-input-prefix i {
+      color: #9dd7ff;
+    }
   }
   input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #4a93d0;
@@ -260,44 +270,111 @@ body.theme-dark {
       background: #009688;
     }
   }
-
-  .column-select{
-    width: 360px;
-    padding: 5px;
-    max-height: 312px;
-    overflow-y: auto;
-    .title {
-      display: inline-block;
-      padding: 10px 0 3px 0px;
-      font-size: 12px;
-      font-weight: bold;
-      color: #7bc5f5;
-      &:first-child {
-        padding-top: 0px;  
-      }
+  .el-range-editor--mini.el-input__inner {    
+    color: #fff;
+    border: 1px solid #41a4e2;
+    background-color: #0d5990;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 16px;
+    .el-range__icon {
+      color: #4a93d0;
+      line-height: 16px;
     }
-    .line {
-      height: 1px;
-      margin: 5px 0;
-      background-color: #7bc5f5;  
+    .el-range-input {
+      color: #fff;  
     }
-    .ivu-checkbox-group {
-      .ivu-col {
-        padding: 3px 0;  
-      }
+    .el-range-separator {
+      color: #9dd7ff;
+      line-height: 16px;
     }
-    .ivu-checkbox-disabled .ivu-checkbox-inner {
-      border-color: #2d8cf0;
-      background: #2276bf;
+    .el-range__close-icon {
+      color: #4a93d0;
+      line-height: 16px;
     }
-    .ivu-checkbox-disabled + span {
-      border-color: #2d8cf0;
-      background: #2276bf;
+    .el-range-input::placeholder {
+      color: #4a93d0;
     }
-    .ivu-checkbox-disabled.ivu-checkbox-checked .ivu-checkbox-inner {
-      border-color: #2d8cf0;
-      background: #2276bf;
+    .el-range-input::-webkit-input-placeholder {
+      color: #4a93d0;
+    }
+    .el-range-input:-moz-placeholder {
+      color: #9dd7ff;
+    }
+    .el-range-input::-moz-placeholder {
+      color: #9dd7ff;
+    }
+    .el-range-input:-ms-input-placeholder {
+      color: #9dd7ff;
     }
   }
-  
+  .el-picker-panel.el-date-range-picker {
+    border: 1px solid rgba(65, 164, 226, 0.34);
+    background-color: rgb(28, 119, 184);
+    .el-picker-panel__sidebar {
+      border: 1px solid rgba(65,164,226,0.34);
+      background-color: #1c77b8;
+      button {
+        color: #ffffff;
+        &:hover {
+          color: #409EFF;  
+        }
+      }
+    }
+    .el-date-range-picker__time-header {
+      border-bottom: 1px solid #98c3f1;
+      & > .el-icon-arrow-right {
+        color: #ffffff;
+      }
+    }
+    .el-date-range-picker__header {
+      color: #ffffff;
+      button {
+        color: #ffffff;
+      }
+    }
+    .el-date-table th {
+      color: #ffffff;  
+      border-color: #98c3f1;
+    }
+    .el-date-range-picker__content.is-left {
+      border-right: 1px solid #98c3f1;
+    }
+    .el-picker-panel__footer {
+      border: 1px solid rgba(65,164,226,0.34);
+      background-color: #1c77b8;
+      .el-button+.el-button {
+        color: #9dd7ff;
+        background: #1681c4;
+        border-color: #176596;
+        &:not(.is-disabled):hover {
+          color: #fff;
+          border-color: #53b9f9;
+          background: #53b9f9;
+        }
+      }
+    }
+    .el-date-table td.available {
+      color: #ffffff;  
+    }
+    .el-date-table td.in-range div {
+      background-color: #b4d0f9;
+    }
+    .el-date-table td div:hover {
+      background-color: #739ddc;
+    }
+    .el-input--small .el-input__inner {
+      height: 25px;
+      line-height: 25px;
+      background: none;
+      color: #fff;
+      border-color: #98c3f1;
+    }
+    .el-time-panel {
+      .el-time-spinner__item {
+        height: 25px;
+        line-height: 25px;
+      }
+    }
+  }
 }

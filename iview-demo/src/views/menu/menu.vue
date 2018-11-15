@@ -61,7 +61,8 @@ export default {
       cursor: pointer;
       z-index: 1000;
       .ivu-icon {
-        width: 100%;  
+        width: 100%;
+        text-indent: -3px;
       }
     }
   }

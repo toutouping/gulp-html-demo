@@ -6,7 +6,7 @@
         <div id="form-content">
           <Input prefix="ios-contact" v-model="userName" size="large" placeholder="请输入用户名"/>
           <Input prefix="md-lock" v-model="password" size="large" placeholder="请输入用户名"/>
-          <Button type="primary" @click="loginConfirm" size="large">Primary</Button>
+          <Button type="primary" @click="loginConfirm" size="large">登录</Button>
           <p class="error-msg">{{errMessage}}</p>
         </div>
       </div>

@@ -6,6 +6,7 @@ export default {
     return {
       period: ['2016-01-01', '2016-02-15'],
       groupName: '1',
+      isFullScreen: false,
       groupList: [{
         value: '1',
         label: '运行调度室'
@@ -62,6 +63,31 @@ export default {
     };
   },
   methods: {
+    _getMyTool () {
+      let ths = this;
+      let theme = ths.$store.state.isThemeDark ? '_dark.png' : '_light.png';
+
+      return {
+        show: true,
+        title: ths.isFullScreen ? '切换为全屏' : '退出全屏',
+        icon: ths.isFullScreen ? 'image://static/img/outscreen' + theme : 'image://static/img/fullscreen' + theme,
+        onclick: function () {
+          let option = ths.myChart.getOption();
+
+          ths.isFullScreen = !ths.isFullScreen;
+          option.toolbox[0].feature.myTool = ths._getMyTool(ths.isFullScreen);
+          // let option = ths._getOptions(ths.categories, ths.data, ths.links);
+          ths.$nextTick(function () {
+            ths.$refs.relationChart.innerHTML = '';
+            ths.$refs.relationChart.removeAttribute('_echarts_instance_');
+            ths.$refs.relationChart.removeAttribute('style');
+            ths.myChart = echarts.init(ths.$refs.relationChart);
+            ths.myChart.setOption(option);
+            ths._bindEvent();
+          }, 500);
+        }
+      };
+    },
     getLinks () {
       var links = [
         {
@@ -201,11 +227,10 @@ export default {
           name: '招行',
           symbol: 'diamond',
           category: 0,
-          draggable: false,
-          des: '',
           fixed: true,
           x: 500,
           y: 300,
+          des: '',
           symbolSize: 80
         },
         {
@@ -338,7 +363,7 @@ export default {
     },
     _getOptions (categories, viewData, links) {
       let ths = this;
-      let theme = ths.$store.state.theme;
+      let isThemeDark = ths.$store.state.isThemeDark;
 
       return {
         title: {
@@ -346,9 +371,9 @@ export default {
           show: false,
           padding: 10,
           textStyle: {
-            color: theme === 'dark' ? '#ffffff' : '#333',
+            color: isThemeDark ? '#ffffff' : '#333',
             subtextStyle: {
-              color: theme === 'dark' ? '#ffffff' : '#333'
+              color: isThemeDark ? '#ffffff' : '#333'
             }
           }
         },
@@ -358,18 +383,19 @@ export default {
           y: 0.7,
           r: 1,
           colorStops: [{
-            offset: 0, color: theme === 'dark' ? '#2065ac' : '#ffffff'
+            offset: 0, color: isThemeDark ? '#2065ac' : '#ffffff'
           }, {
-            offset: 1, color: theme === 'dark' ? '#153c70' : '#ffffff'
+            offset: 1, color: isThemeDark ? '#153c70' : '#ffffff'
           }],
           globalCoord: false
         },
         toolbox: {
           show: true,
           iconStyle: {
-            borderColor: theme === 'dark' ? '#ffffff' : '#333'
+            borderColor: isThemeDark ? '#ffffff' : '#333'
           },
           feature: {
+            myTool: ths._getMyTool(),
             restore: {},
             saveAsImage: {}
           }
@@ -390,7 +416,7 @@ export default {
             };
           }),
           textStyle: {
-            color: theme === 'dark' ? '#ffffff' : '#333'
+            color: isThemeDark ? '#ffffff' : '#333'
           }
         }],
         series: [
@@ -398,8 +424,8 @@ export default {
             type: 'graph',
             layout: 'force',
             roam: true,
-            hoverAnimation: true,
-            focusNodeAdjacency: true,
+            hoverAnimation: false,
+            focusNodeAdjacency: false,
             symbol: 'circle',
             symbolSize: 80,
             edgeSymbol: ['circle', 'arrow'],
@@ -446,7 +472,7 @@ export default {
             },
             label: {
               normal: {
-                color: theme === 'dark' ? '#ffffff' : '#333',
+                color: isThemeDark ? '#ffffff' : '#333',
                 show: true
               }
             },
@@ -456,6 +482,29 @@ export default {
           }
         ]
       };
+    },
+    _bindEvent () {
+      let ths = this;
+
+      ths.myChart.on('mouseup', function (p) {
+        if (p.data.category !== 0) {
+          p.data.fixed = true;
+          p.data.x = p.event.offsetX;
+          p.data.y = p.event.offsetY;
+          ths.myChart.setOption(ths.myChart.getOption());
+        }
+      });
+
+      ths.myChart.on('dblClick', function (p) {
+        if (p.data.value) {
+          p.data.value = false;
+          ths.myChart.setOption(ths.myChart.getOption());
+        } else {
+          p.data.value = true;
+          // ths.myChart.setOption(ths.myChart.getOption());
+          ths.myChart.setOption(ths._getOptions(ths.categories, ths.getData(), ths.getLinks()));
+        }
+      });
     }
   },
   mounted () {
@@ -465,30 +514,11 @@ export default {
     // ths.links = ths.getLinks();
     ths.myChart = echarts.init(this.$refs.relationChart);
     ths.myChart.setOption(ths._getOptions(ths.categories, ths.data, ths.links));
-
-    ths.myChart.on('mouseup', function (p) {
-      if (p.data.category !== 0) {
-        p.data.fixed = true;
-        p.data.x = p.event.offsetX;
-        p.data.y = p.event.offsetY;
-        ths.myChart.setOption(ths.myChart.getOption());
-      }
-    });
-
-    ths.myChart.on('dblClick', function (p) {
-      if (p.data.value) {
-        p.data.value = false;
-        ths.myChart.setOption(ths.myChart.getOption());
-      } else {
-        p.data.value = true;
-        // ths.myChart.setOption(ths.myChart.getOption());
-        ths.myChart.setOption(ths._getOptions(ths.categories, ths.getData(), ths.getLinks()));
-      }
-    });
+    ths._bindEvent();
   },
   computed: {
     listenStageTheme () {
-      return this.$store.state.theme;
+      return this.$store.state.isThemeDark;
     }
   },
   watch: {

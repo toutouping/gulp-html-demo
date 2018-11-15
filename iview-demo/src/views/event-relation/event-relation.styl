@@ -10,18 +10,36 @@
     line-height: 55px;
     padding:0 20px;
     border-bottom: 1px solid transparent;
+    &.full-screen {
+      display: inline-block;
+      left: 0px;
+      position: fixed;
+      top: 1px;
+      z-index: 2000;
+    }
   }
   .relation-chart{
     margin-top: 55px;
     width: 100%;
     height: calc(100% - 55px);
+    &.full-screen {
+      position: fixed !important;
+      top: 0px;
+      right: 0px;
+      left: 0px;
+      bottom: 0px;
+      z-index: 1000;
+    }
   }
 }
 body.theme-dark {
   .event-relation {
     background: rgba(0,0,0,0.15);
     .filter-content {
-      background: rgba(0,0,0,0.3);;
+      background: rgba(0,0,0,0.3);
+      &.full-screen {
+        background-color: #245893;
+      }
     }
   }
 }
@@ -29,7 +47,10 @@ body.theme-light {
   .event-relation {
     background: #ffffff;
     .filter-content {
-      background: #c4cfe6;
+      background: #b3c5e9;
+      &.full-screen {
+        background-color: #245893;
+      }
     }
   }
 }

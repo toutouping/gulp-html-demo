@@ -6,5 +6,8 @@ export const mutations = {
   },
   [types.SAVE_THEME] (state, theme) {
     state.theme = theme;
+  },
+  [types.SAVE_IS_THEME_DARK] (state, theme) {
+    state.isThemeDark = theme;
   }
 };
