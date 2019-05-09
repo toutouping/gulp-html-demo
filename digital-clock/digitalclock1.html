@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .content {
+      display: inline-block;
+      list-style: none;
+    }
+
+    .content li {
+      position: relative;
+      display: inline-block;
+      list-style: none;
+      width: 30px;
+      height: 40px;
+      font-size: 0px;
+      line-height: 0px;
+      overflow: hidden;
+    }
+    .content li>div {
+      position: absolute;
+    }
+    .content li span {
+      font-size: 28px;
+      display: inline-block;
+      list-style: none;
+      width: 30px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: #9E9E9E;
+      border-radius: 4px;
+    }
+
+    .content .flags {
+      width: 20px;
+    }
+
+    .content .flags span {
+      width: 20px;
+      background: none;
+    }
+  </style>
+</head>
+
+<body>
+  <ul class="content">
+    <li id="h0">
+      <div>
+        <span></span>
+        <span></span>
+      </div>
+    </li>
+    <li id="h1">
+      <div>
+        <span></span>
+        <span></span>
+      </div>
+    </li>
+    <li class="flags">
+      <span>:</span>
+    </li>
+    <li id="m0">
+      <div>
+        <span></span>
+        <span></span>
+      </div>
+    </li>
+    <li id="m1">
+      <div>
+        <span></span>
+        <span></span>
+      </div>
+    </li>
+    <li class="flags">
+      <span>:</span>
+    </li>
+    <li id="s0">
+      <div>
+        <span></span>
+        <span></span>
+      </div>
+    </li>
+    <li id="s1">
+      <div>
+        <span></span>
+        <span></span>
+      </div>
+    </li>
+  </ul>
+
+  <script type="text/javascript" src="./js/TweenMax.js"></script>
+  <script src="./js/jquery-1.10.1.min.js"></script>
+  <script>
+    var h10 = $('#h0 div');
+    var h0 = $('#h1 div');
+    var m10 = $('#m0 div');
+    var m0 = $('#m1 div');
+    var s10 = $('#s0 div');
+    var s0 = $('#s1 div');
+
+    var t, ss, mm, hh;
+    setTimeVars();
+    interValFn();
+
+    function setTimeVars() {
+      t = new Date();
+      t = new Date();
+      ss = String(t.getSeconds());
+      mm = String(t.getMinutes());
+      hh = String(t.getHours());
+      if (ss.length == 1) ss = "0" + ss;
+      if (mm.length == 1) mm = "0" + mm;
+      if (hh.length == 1) hh = "0" + hh;
+    }
+    h10.find('span')[0].innerHTML = (Number(hh.substr(0, 1)));
+    h0.find('span')[0].innerHTML = (Number(hh.substr(1, 1)));
+    m10.find('span')[0].innerHTML = (Number(mm.substr(0, 1)));
+    m0.find('span')[0].innerHTML = (Number(mm.substr(1, 1)));
+    s10.find('span')[0].innerHTML = (Number(ss.substr(0, 1)));
+    s0.find('span')[0].innerHTML = (Number(ss.substr(1, 1)));
+
+    function tick(mc, i, toZero=false){
+      mc.find('span')[0].innerHTML = i;
+      if ( i==9 || toZero ) i=-1;
+      mc.find('span')[1].innerHTML = i+1;
+      TweenMax.set(mc, { top: 0});
+      TweenMax.to(mc, 0.5, { top: -40});
+    }
+
+    function interValFn () {
+      // start ticking
+      var interval = setInterval(function(){
+        setTimeVars();
+        
+        tick(s0, Number(ss.substr(1,1)) )
+        
+        if (ss.substr(1,1)=="9"){
+          tick(s10, Number(ss.substr(0,1)) ) 
+          if (ss=="59"){
+            tick(s10, 5, true)
+            tick(m0, Number(mm.substr(1,1)))
+            if (mm.substr(1,1)=="9"){
+              tick(m10, Number(mm.substr(0,1)))
+              if (mm=="59") {
+                tick(m10, 5, true)
+                tick(h0, Number(hh.substr(1,1)))
+                if (hh.substr(1,1)=="9") tick(h10, Number(hh.substr(0,1)))
+                if (hh=="24") {
+                  tick(h0, Number(hh.substr(0,1)), true)
+                  tick(h10, Number(hh.substr(1,1)), true)
+                }
+              }
+            }
+          }
+        }
+      }, 1000)
+    }
+  </script>
+</body>
+
+</html>
