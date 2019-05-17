@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTML5 Canvas绘制弧线入门示例</title>
+</head>
+<body>
+ 
+<!-- 添加canvas标签，并加上红色边框以便于在页面上查看 -->
+<canvas id="myCanvas" width="400px" height="300px">
+您的浏览器不支持canvas标签。
+</canvas>
+ 
+<script type="text/javascript">
+
+var requestAnimation = window.requestAnimationFrame ||  window.webkitRequestAnimationFrame || function(c) {setTimeout(c, 1 / 60 * 1000);};
+//获取Canvas对象(画布)
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d"); // 获取对应的CanvasRenderingContext2D对象(画笔)
+
+var circle = {
+    x : 100,    //圆心的x轴坐标值
+    y : 100,    //圆心的y轴坐标值
+    r : 40,     //圆的半径
+    lineWidth: 3,
+    borderColor: '#DFB274',
+    startDegreed: Math.PI / 8,
+    degreed: Math.PI / 2,
+    fillStyle: '#FF0000', // 饼图填充颜色
+    isFill: false // 是否为饼图
+};
+
+// loadCanvasInterval(1); // 通过JS的setInterval实现动画
+loadCanvasAnimation(1); // 通过requestAnimationFrame实现动画
+
+// 通过requestAnimationFrame实现动画
+function loadCanvasAnimation(now){
+  var t=0;
+  render();
+  function render() {
+		if(t>now){//最后一次绘制
+      beginDraw(circle, false, now);
+		}else{
+			beginDraw(circle, true, t);
+			t+=0.01;
+      requestAnimation(render);
+		}
+  }
+}
+
+// 通过JS的setInterval实现动画
+function loadCanvasInterval(now){
+  var t=0;
+  var timer=null;
+	timer = setInterval(function(){
+		if(t>now){
+      beginDraw(circle, false, now);//最后一次绘制
+			clearInterval(timer);
+		}else{
+			beginDraw(circle, true, t);
+      t+=0.01;
+		}
+	},20);
+}
+
+// 画圆
+function drawCircle (circle) {
+    ctx.beginPath(); // 开始一个新的绘制路径
+    ctx.lineWidth = circle.lineWidth;
+    ctx.fillStyle = circle.fillStyle; // 设置或返回用于填充绘画的颜色、渐变或模式 染成红色
+    if (circle.isFill) {
+      ctx.moveTo(circle.x, circle.y); // 把路径移动到画布中的指定点，不创建线条
+      // 沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧线
+      ctx.arc(circle.x, circle.y, circle.r, circle.startDegreed, circle.degreed, false);  
+      ctx.closePath(); // 创建从当前点回到起始点的路径
+      ctx.fill(); // 填充当前绘图（路径）  
+    } else {
+      ctx.strokeStyle = circle.borderColor;// 设置弧线的颜色为蓝色
+      ctx.arc(circle.x, circle.y, circle.r, -circle.startDegreed, circle.degreed - circle.startDegreed, false);  //沿着坐标点(100,100)为圆心、半径为50px的圆的顺时针方向绘制弧线
+      ctx.stroke(); // 按照指定的路径绘制弧线
+    }
+}
+
+// 画终点
+function drawEnd (circle) {
+  var x1 = circle.x + circle.r * Math.cos(circle.degreed - circle.startDegreed);
+  var y1 = circle.y + circle.r * Math.sin(circle.degreed - circle.startDegreed);
+  drawCircle ({
+    x : x1,    //圆心的x轴坐标值
+    y : y1,    //圆心的y轴坐标值
+    r : 5,     //圆的半径
+    startDegreed: 0,
+    degreed: Math.PI * 2,
+    fillStyle: '#DFB274', // 饼图填充颜色
+    isFill: true // 是否为饼图
+  })
+};
+
+// 绘制文本
+function drawTxt (str) {
+  ctx.font = '20px Arial';
+  ctx.fillStyle = '#ccc';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(str, 100, 100);  
+}
+
+function beginDraw (circle, needEnd, time) {
+  // 简单地检测当前浏览器是否支持Canvas对象，以免在一些不支持html5的浏览器中提示语法错误
+  if(canvas.getContext){
+    ctx.clearRect(0, 0, 400, 300);
+    circle.degreed = Math.PI * 2 * time;
+    // 画灰色背景圆环
+    drawCircle({
+        x : 100,    //圆心的x轴坐标值
+        y : 100,    //圆心的y轴坐标值
+        r : 40,     //圆的半径
+        lineWidth: 3,
+        borderColor: '#ccc',
+        startDegreed: 0,
+        degreed: Math.PI * 2,
+        fillStyle: '', // 饼图填充颜色
+        isFill: false // 是否为饼图
+    });
+    // 画数值局域圆形背景
+    drawCircle({
+        x : 100,    //圆心的x轴坐标值
+        y : 100,    //圆心的y轴坐标值
+        r : 30,     //圆的半径
+        startDegreed: 0,
+        fillStyle: 'rgba(254, 244, 232, 0.5)', // 饼图填充颜色
+        degreed: Math.PI * 2,
+        isFill: true // 是否为饼图
+    });
+      
+    drawTxt((time * 100).toFixed(0) + '%');
+
+    drawCircle(circle);
+    if (needEnd) {
+      drawEnd(circle);
+    }
+  }
+}
+</script>
+</body>
+</html>
