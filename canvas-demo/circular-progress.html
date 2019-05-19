@@ -30,8 +30,8 @@ var circle = {
     isFill: false // 是否为饼图
 };
 
-// loadCanvasInterval(1); // 通过JS的setInterval实现动画
-loadCanvasAnimation(1); // 通过requestAnimationFrame实现动画
+loadCanvasInterval(1); // 通过JS的setInterval实现动画
+// loadCanvasAnimation(1); // 通过requestAnimationFrame实现动画
 
 // 通过requestAnimationFrame实现动画
 function loadCanvasAnimation(now){
@@ -60,7 +60,7 @@ function loadCanvasInterval(now){
 			beginDraw(circle, true, t);
       t+=0.01;
 		}
-	},20);
+	}, 10);
 }
 
 // 画圆
